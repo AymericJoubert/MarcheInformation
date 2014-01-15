@@ -25,6 +25,10 @@
         <url-pattern>/servlet/*</url-pattern>
     </servlet-mapping>
 
+<listener>
+    <listener-class>tools.SessionTrack</listener-class>
+</listener>
+
     <!-- Parametrages propres a cette application web -->
    <context-param>
       <param-name>concepteur</param-name>
@@ -55,13 +59,13 @@
         <session-timeout>1</session-timeout>
     </session-config>
 
-    <!-- <welcome-file-list> -->
-    <!--     <welcome-file>menu.html</welcome-file> -->
-    <!-- </welcome-file-list> -->
+    <welcome-file-list>
+        <welcome-file>menu.html</welcome-file>
+    </welcome-file-list>
 
 
     <!--  Lien entre les pages et les roles -->
-<!--    <security-constraint>
+    <security-constraint>
      <web-resource-collection>
        <web-resource-name>Administrateur</web-resource-name>
          <url-pattern>/page2.html</url-pattern>
@@ -91,21 +95,21 @@
          <role-name>role1</role-name>
          <role-name>role2</role-name>
       </auth-constraint>
-    </security-constraint> -->
+    </security-constraint>
 
 
     <!-- La maniere dont la page de login est affichee -->
- <!--   <login-config>
+    <login-config>
       <auth-method>BASIC</auth-method>
       <realm-name>Nom affiché sur le formulaire</realm-name>
-    </login-config> -->
+    </login-config>
 
     <!-- La liste des differents roles -->
-<!--    <security-role>
+    <security-role>
       <role-name>role1</role-name>
     </security-role>
     <security-role>
       <role-name>role2</role-name>
-    </security-role> -->
+    </security-role> 
 
 </web-app>
