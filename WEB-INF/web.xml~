@@ -1,115 +1,143 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 <!DOCTYPE web-app
-    PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
-    "http://java.sun.com/j2ee/dtds/web-app_2.2.dtd">
+PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
+"http://java.sun.com/j2ee/dtds/web-app_2.2.dtd">
 
 <web-app>
+  
+  
+  <!-- Partie obligatoire pour l'acces aux Servlets -->
+  <servlet>
+    <servlet-name>invoker</servlet-name>
+    <servlet-class>
+      org.apache.catalina.servlets.InvokerServlet
+    </servlet-class>
+    <init-param>
+      <param-name>debug</param-name>
+      <param-value>0</param-value>
+    </init-param>
+    <load-on-startup>2</load-on-startup>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>invoker</servlet-name>
+    <url-pattern>/servlet/*</url-pattern>
+  </servlet-mapping>
+  
 
 
-   <!-- Partie obligatoire pour l'acces aux Servlets -->
-     <servlet>
-        <servlet-name>invoker</servlet-name>
-        <servlet-class>
-          org.apache.catalina.servlets.InvokerServlet
-        </servlet-class>
-        <init-param>
-            <param-name>debug</param-name>
-            <param-value>0</param-value>
-        </init-param>
-        <load-on-startup>2</load-on-startup>
-    </servlet>
 
-   <servlet-mapping>
-        <servlet-name>invoker</servlet-name>
-        <url-pattern>/servlet/*</url-pattern>
-    </servlet-mapping>
-
-<listener>
-    <listener-class>tools.SessionTrack</listener-class>
-</listener>
-
-    <!-- Parametrages propres a cette application web -->
-   <context-param>
-      <param-name>concepteur</param-name>
-      <param-value>Philippe MATHIEU, LP DA2I</param-value>
-      <description>
-        Constantes de l'appli
-	accessibles par getServletContext().getInitParameter("name");
-      </description>
-    </context-param>
-
-    <!--       Recuperation des erreurs      -->
-    <!-- A commenter lors des mises au point -->
-<error-page>
-<error-code>403</error-code>
-<location>/erreur.jsp?message=Cette page ne vous est pas accessible</location>
-</error-page>
-<error-page>
-<error-code>404</error-code>
-<location>/erreur.jsp?message=Page inexistante</location>
-</error-page>
-<error-page>
-<error-code>500</error-code>
-<location>/erreur.jsp?message=BDD ou Beans inaccessibles</location>
-</error-page>
-
-    <!-- Vie de la session en minutes -->
-    <session-config>
-        <session-timeout>1</session-timeout>
-    </session-config>
-
-    <welcome-file-list>
-        <welcome-file>menu.html</welcome-file>
-    </welcome-file-list>
+  <!-- Parametrages propres a cette application web -->
+  <context-param>
+    <param-name>concepteur</param-name>
+    <param-value>Philippe MATHIEU, LP DA2I</param-value>
+    <description>
+      Constantes de l'appli
+      accessibles par getServletContext().getInitParameter("name");
+    </description>
+  </context-param>
+  
 
 
-    <!--  Lien entre les pages et les roles -->
-    <security-constraint>
-     <web-resource-collection>
-       <web-resource-name>Administrateur</web-resource-name>
-         <url-pattern>/page2.html</url-pattern>
-     </web-resource-collection>
-      <auth-constraint>
-         <role-name>role1</role-name>
-      </auth-constraint>
-    </security-constraint>
-
-    <security-constraint>
-     <web-resource-collection>
-       <web-resource-name>Administrateur</web-resource-name>
-         <url-pattern>/page3.html</url-pattern>
-     </web-resource-collection>
-      <auth-constraint>
-         <role-name>role2</role-name>
-      </auth-constraint>
-    </security-constraint>
-
-    <security-constraint>
-     <web-resource-collection>
-       <web-resource-name>Administrateur</web-resource-name>
-         <url-pattern>/page4.jsp</url-pattern>
-         <url-pattern>/page5.jsp</url-pattern>
-     </web-resource-collection>
-      <auth-constraint>
-         <role-name>role1</role-name>
-         <role-name>role2</role-name>
-      </auth-constraint>
-    </security-constraint>
 
 
-    <!-- La maniere dont la page de login est affichee -->
-    <login-config>
-      <auth-method>BASIC</auth-method>
-      <realm-name>Nom affiché sur le formulaire</realm-name>
-    </login-config>
 
-    <!-- La liste des differents roles -->
-    <security-role>
+  <!--       Recuperation des erreurs      -->
+  <!-- A commenter lors des mises au point -->
+  <error-page>
+    <error-code>403</error-code>
+    <location>/erreur.jsp?message=Cette page ne vous est pas accessible</location>
+  </error-page>
+  <error-page>
+    <error-code>404</error-code>
+    <location>/erreur.jsp?message=Page inexistante</location>
+  </error-page>
+  <error-page>
+    <error-code>500</error-code>
+    <location>/erreur.jsp?message=BDD ou Beans inaccessibles</location>
+  </error-page>
+  
+
+
+
+
+  <!-- Vie de la session en minutes -->
+  <session-config>
+    <session-timeout>5</session-timeout>
+  </session-config>
+  
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file> 
+  </welcome-file-list>
+  
+  
+
+
+
+  <!-- Lien entre les pages et les roles -->
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>Administrateur</web-resource-name>
+      <url-pattern>/compte.jsp</url-pattern>
+    </web-resource-collection>
+    <auth-constraint>
       <role-name>role1</role-name>
-    </security-role>
-    <security-role>
+    </auth-constraint>
+  </security-constraint>
+
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>Administrateur</web-resource-name>
+      <url-pattern>/factice.jsp</url-pattern>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>role1</role-name>
+	<role-name>role2</role-name>
+	<role-name>role3</role-name>
+    </auth-constraint>
+  </security-constraint>
+
+  <!--<security-constraint>
+    <web-resource-collection>
+      <web-resource-name>Administrateur</web-resource-name>
+      <url-pattern>/page4.jsp</url-pattern>
+      <url-pattern>/page5.jsp</url-pattern>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>role1</role-name>
       <role-name>role2</role-name>
-    </security-role> 
+    </auth-constraint>
+  </security-constraint>-->
+
+
+
+
+
+
+  <!-- La maniere dont la page de login est affichee -->
+  <!--   <login-config>
+       <auth-method>BASIC</auth-method>
+       <realm-name>Nom affiché sur le formulaire</realm-name>
+       </login-config> -->
+
+  <login-config>
+    <auth-method>FORM</auth-method>
+    <realm-name>Connection</realm-name>
+    <form-login-config>
+      <form-login-page>./login.jsp</form-login-page>
+      <form-error-page>./erreur_login.jsp</form-error-page>
+    </form-login-config>
+  </login-config>
+
+
+
+  <!-- La liste des differents roles -->
+   <security-role>
+       <role-name></role-name>
+       </security-role>
+       <security-role>
+       <role-name>role2</role-name>
+       </security-role> 
 
 </web-app>
