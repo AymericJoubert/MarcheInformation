@@ -1,11 +1,16 @@
 body{
     font-family: Verdana,Geneva,Kalimati,sans-serif;
-    //background-color: black;
+    background-color: rgb(240,240,240);
+}
+
+a:hover{
+    color:red;
 }
 
 header{
     height:115px;
-    background-color: rgb(240,240,240);
+    background-color: rgb(210,210,210);
+    border-radius:5px;
 }
 
 header img{
@@ -49,7 +54,7 @@ header h1{
 
 nav{
     margin-top:10px;
-    background-color: rgb(240,240,240);
+    background-color: rgb(210,210,210);
     border-radius:5px;
     width:760px;
     float:left;
@@ -87,7 +92,8 @@ ul a{
 #marche{
     padding-left:10px;
     margin-top:10px;
-    background-color : rgb(240,240,240);
+    margin-bottom: 10px;
+    background-color : rgb(210,210,210);
     border-radius:5px;
     width:750px;
     float: left;
@@ -120,8 +126,12 @@ ul a{
     margin-top:10px;
 }
 
+#marche table td{
+    width:25%;
+}
+
 #bandeau{
-    background-color: rgb(240,240,240);
+    background-color: rgb(210,210,210);
     margin-top:10px;
     border-radius: 5px;
     width: 250px;
@@ -131,11 +141,14 @@ ul a{
 
 #bandeau h3{
     text-align:center;
+    height:35px;
 }
 
 #bandeau ul{
     padding :0;
     padding-left: 10px;
+    padding-right: 10px;
+    text-align:center;
 }
 
 #bandeau li{
@@ -149,7 +162,7 @@ ul a{
 
 footer{
     clear:both;
-    background-color: rgb(240,240,240);
+    background-color: rgb(210,210,210);
     border-radius:5px;
 }
 
