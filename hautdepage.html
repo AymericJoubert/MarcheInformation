@@ -40,7 +40,11 @@
 	  <ul>
 	    <a href=""><li>Les march&eacute;s</li></a>
 	    <a href=""><li>Compte</li></a>
+	    <% if(request.getRemoteUser()!=null) {%>
+	    <a href="login.jsp"><li>Deconnection</li></a>
+	    <% } else { %>
 	    <a href="factice.jsp"><li>Connection</li></a>
+	    <% } %>
 	  </ul>
 	</div>
 

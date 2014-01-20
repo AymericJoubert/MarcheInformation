@@ -5,7 +5,7 @@
         <%@ page
                contentType="text/html; charset=ISO-8859-15" 
 	       isErrorPage="true" %>
-	<link rel="stylesheet" href="style.css" type="text/css">
+	<link rel="stylesheet" href="CSS/base.css" type="text/css">
     </head>
 <body>
 
@@ -13,7 +13,7 @@
    <h3> Un probleme de type 
 "<%
 	String m = request.getParameter("message");
-	if (m!=null) out.print(m);
+	//out.println(request);
 	if (exception!=null) out.print(exception.getMessage());
  %>" est survenu.</h3> 
 
@@ -21,6 +21,17 @@
 <a href=menu.html>Retour</a>
 
 <%@ include file="basDePage.html" %>
+
+
+
+
+
+
+
+<%
+String request_uri = (String)request.getAttribute("javax.servlet.error.request_uri");
+out.println(request_uri);
+%>
 
 </body>
 </html>
