@@ -4,13 +4,14 @@
     <meta http-equiv="Content-Type" CONTENT="text/html;charset=iso-8859-1">
     <link rel="stylesheet" type="text/css" href="CSS/base.css" /> 
     <title>Mache de l'Information</title>
+    <jsp:useBean id="market" class="tools.Market" scope="page"/>
   </head>
   <body>
     <%@ include file="hautdepage.html" %>
-
+    <jsp:setProperty name="market" property="question" />
     <section id="marche">
-      <h3>Marché</h3>
-      <h4>Demode va se raser les cheveux dans deux jours</h4>
+      <h1>Marché</h1>
+      <h2><%= market.getQuestion() %></h2>
       <table border>
 	<caption>Ventes</caption>
 	<tr>
