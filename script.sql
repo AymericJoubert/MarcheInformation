@@ -46,6 +46,7 @@ CREATE TABLE offre(
   marche int,
   acheteur int,
   acheteur_inverse int,
+  offre_date date,
   CONSTRAINT pk_offre_id PRIMARY KEY (offre_id),
   CONSTRAINT fk_marche FOREIGN KEY (marche) REFERENCES marche (marche_id),
   CONSTRAINT fk_acheteur FOREIGN KEY (acheteur) REFERENCES trader (trader_id),

@@ -7,7 +7,7 @@ import javax.naming.*;
 
 public class Market{
 
-    private String titre,table;
+    private String titre,table,tableInverse;
 
     public Market(){
 		titre = null;
@@ -24,7 +24,7 @@ public class Market{
 
     public void getMarket(int market) throws SQLException, NamingException{
 		Connection con = getConnection();
-		PreparedStatement pst = con.prepareStatement("SELECT m.question,o.acheteur,o.quantite,o.valeur FROM marche as m LEFT JOIN offre as o ON o.marche = m.marche_id WHERE m.marche_id = ?;");
+		PreparedStatement pst = con.prepareStatement("SELECT m.question,o.acheteur,o.quantite,o.valeur,o.offre_date FROM marche as m LEFT JOIN offre as o ON o.marche = m.marche_id WHERE m.marche_id = ?;");
 		pst.setInt(1,market);
 		ResultSet rs = pst.executeQuery();
 		String result = "<table id='market_table'> <tr><th>Nom</th><th>Quantité</th><th>Prix</th><th>Date</th></tr>";
@@ -34,7 +34,7 @@ public class Market{
 			result += "<td>"+rs.getString(2)+"</td>";
 			result +="<td>"+rs.getString(3)+"</td>";
 			result +="<td>"+rs.getString(4)+"</td>";
-			// result +="<td>"+rs.getString(5)+"</td>";
+			result +="<td>"+rs.getString(5)+"</td>";
 			result += "</tr>";
 		}
 		result += "</table>";

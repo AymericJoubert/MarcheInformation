@@ -179,3 +179,7 @@ footer{
 #droite{
     float:right;
 }
+
+table #market_table{
+    border: 1px solid black;
+}
