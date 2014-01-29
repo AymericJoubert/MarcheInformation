@@ -180,6 +180,6 @@ footer{
     float:right;
 }
 
-table #market_table{
+#market_table table,th,td{
     border: 1px solid black;
 }
