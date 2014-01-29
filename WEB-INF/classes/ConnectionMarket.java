@@ -19,8 +19,9 @@ public class ConnectionMarket
       return con;
       }
 
-  public void closeConnection(){
+  public void closeConnection() throws SQLException{
     if(con != null){
+      con.close();
     }
   }
 }
