@@ -5,63 +5,65 @@
     <link rel="stylesheet" type="text/css" href="CSS/base.css" /> 
     <title>Mache de l'Information</title>
     <!-- <jsp:useBean id="market" class="tools.Market" scope="page"/> -->
-    <%@ page import="bdd.Market" %>
+    <%@ page import="bdd.ManagerMarket,mapping.Market,mapping.Offre" %>
   </head>
   <body>
+  	<% try{%>
     <!-- <jsp:setProperty name="market" property="question" /> -->
-    <% Market marche = new Market();
-    	Market marcheInverse = new Market();
-    	marche.getMarket(1) ;
-    	marcheInverse.getMarket(2);%>
+    <% MarketManager marches = new MarketManager();
+    	// le premier carnet
+    	Integer idMarche = (Integer)req.getParameter("market");
+    	if(id != null)
+    		marches.getMarket(idMarche);
+    	else
+    		marches.getMarket();
+
+    	// recupere le premier carnet
+    	Market marche = marches.getMarches().get(0);
+    	ArrayList<Offre> offres = marche.getOffres();
+    	%>
     <%@ include file="hautdepage.html" %>
     <section id="marche">
       <h1>Marché</h1>
-      <h2><%= marche.getTitre() %></h2>
-      <%= marche.getTable() %>
-      <%= marcheInverse.getTable() %>
-     <!--  <h2><%= market.getQuestion() %></h2> -->
-      <!-- <table border>
-	<caption>Ventes</caption>
-	<tr>
-	  <th>Nom</th>
-	  <th>Quantité</th>
-	  <th>Prix</th>
-	  <th>Date</th>
-	</tr>
-	<tr>
-	  <td>Joubi</td>
-	  <td>5</td>
-	  <td>90</td>
-	  <td>22/01/2014</td>
-	</tr>
-	<tr>
-	  <td>Axoque</td>
-	  <td>5000</td>
-	  <td>9</td>
-	  <td>21/01/2014</td>
-	</tr>
-      </table> -->
-      <!-- <table border>
-	<caption>Achats</caption>
-	<tr>
-	  <th>Nom</th>
-	  <th>Quantité</th>
-	  <th>Prix</th>
-	  <th>Date</th>
-	</tr>
-	<tr>
-	  <td>Blondeah</td>
-	  <td>10</td>
-	  <td>30</td>
-	  <td>22/01/2014</td>
-	</tr>
-	<tr>
-	  <td>Demoooooode</td>
-	  <td>50</td>
-	  <td>95</td>
-	  <td>21/01/2014</td>
-	</tr>	 
-	<% if(session.getAttribute("user_login")!=null) {%>
+      <h2><%= marche.getQuestion() %></h2>
+      <% if (!marche.getMarches().isEmpty()){%>
+      <table id="market_table">
+      	<tr>
+      		<th>Nom</th><th>Quantité</th><th>Prix</th><th>Date</th>
+      	</tr>
+ 	<%for(Offre o : offres){
+ 		if(o.getAcheteurInverse == null){%>
+ 		<tr>
+ 			<td>o.getAcheteur()</td><td>o.getQuantite()</td><td>o.getValeur()</td><td>o.getOffreDate()</td>
+ 		</tr>
+ 	<% }
+ 	} %>
+ </table>
+ <% } %>
+
+ 	<% // recupere le premier carnet
+    	marche = marches.getMarches().get(1);
+    	ArrayList<Offre> offres = marche.getOffres();
+    	%>
+    <%@ include file="hautdepage.html" %>
+    <section id="marche">
+      <h1>Marché</h1>
+      <h2><%= marche.getQuestion() %></h2>
+      <% if (!marche.getMarches().isEmpty()){%>
+      <table id="market_table">
+      	<tr>
+      		<th>Nom</th><th>Quantité</th><th>Prix</th><th>Date</th>
+      	</tr>
+ 	<%for(Offre o : offres){
+ 		if(o.getAcheteurInverse == null){%>
+ 		<tr>
+ 			<td>o.getAcheteur()</td><td>o.getQuantite()</td><td>o.getValeur()</td><td>o.getOffreDate()</td>
+ 		</tr>
+ 	<% }
+ 	} %>
+ </table>
+ <% } %>
+	<!-- <% if(session.getAttribute("user_login")!=null) {%>
 	<tr></tr>
 	<tr>
 	  <form>
@@ -81,6 +83,8 @@
 	<h5>DA2I 2014 <br/>Mentions Légales - Tous droits réservés <br/> Blondeau - Joubert</h5>
       </div>
     </footer>
-    
+    <% }catch(Exception e){%>
+    	<p id="erreur"><%= e%></p>
+    <%}%>
   </body>
 </html>

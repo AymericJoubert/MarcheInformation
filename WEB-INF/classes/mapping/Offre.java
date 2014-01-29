@@ -1,10 +1,22 @@
 package tools;
 
+import java.util.Date;
+
 public class Offre{
 
-    private int offreId, valeur, quantite, marche, acheteur,acheteurInverse;
+    private int offreId, valeur, quantite, marche;
+    private String acheteur,acheteurInverse;
+    private Date offreDate;
 
-    public offre(){}
+    public Offre(){
+        offreId = 0;
+        valeur = 0;
+        quantite = 0;
+        marche = 0;
+        acheteur = null;
+        acheteurInverse = null;
+        offreDate = null;
+    }
 
     public int getOffreId(){
 	return offreId;
@@ -18,39 +30,48 @@ public class Offre{
 	return valeur;
     }
 
-    public void set(int ){
-
+    public void setValeur(int val){
+        valeur = val;
     }
 
-    public int get(){
-
+    public int getQuantite(){
+        return quantite;
     }
 
-    public void set(int ){
-
+    public void setQuantite(int qute){
+        quantite = qute;
     }
 
-    public int get(){
-
+    public int getMarche(){
+        return marche;
     }
 
-    public void set(int ){
-
+    public void setMarche(int id){
+        marche = id;
     }
 
-    public int get(){
-
+    public String getAcheteur(){
+        return acheteur;
     }
 
-    public void set(int ){
-
+    public void setAcheteur(String acheteur){
+        this.acheteur = acheteur;
+        
     }
 
-    public int get(){
-
+    public String getAcheteurInverse(){
+        return acheteurInverse;
     }
 
-    public void set(int ){
+    public void setAcheteurInverse(String acheteur){
+        acheteurInverse = acheteur;
+    }
 
+    public Date getOffreDate(){
+        return offreDate;
+    }
+
+    public void set(Date date){
+        offreDate = date;
     }
 }
