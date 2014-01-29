@@ -16,7 +16,7 @@ public class ConnectionMarket extends HttpServlet
     res.setContentType( "text/html" );
     
     Context initCtx = new InitialContext();
-    Content envCtx = (Context) initCtx.lookup("java:comp/env");
+    Context envCtx = (Context) initCtx.lookup("java:comp/env");
     DataSource ds = (DataSource) envCtx.lookup("marche");
     Connection con = ds.getConnection();
     PreparedStatement st = con.prepareStatement("SELECT ? FROM marche WHERE marche_id = ?");

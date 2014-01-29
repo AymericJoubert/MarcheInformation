@@ -4,15 +4,23 @@
     <meta http-equiv="Content-Type" CONTENT="text/html;charset=iso-8859-1">
     <link rel="stylesheet" type="text/css" href="CSS/base.css" /> 
     <title>Mache de l'Information</title>
-    <jsp:useBean id="market" class="tools.Market" scope="page"/>
+    <!-- <jsp:useBean id="market" class="tools.Market" scope="page"/> -->
+    <%@ page import="bdd.Market" %>
   </head>
   <body>
     <%@ include file="hautdepage.html" %>
-    <jsp:setProperty name="market" property="question" />
+    <!-- <jsp:setProperty name="market" property="question" /> -->
+    <% Market marche = new Market();
+    	Market marcheInverse = new Market();
+    	marche.getMarket(1) ;
+    	marcheInverse.getMarket(2);%>
     <section id="marche">
       <h1>Marché</h1>
-      <h2><%= market.getQuestion() %></h2>
-      <table border>
+      <h2><%= marche.getTitre() %></h2>
+      <%= marche.getTable() %>
+      <%= marcheInverse.getTable() %>
+     <!--  <h2><%= market.getQuestion() %></h2> -->
+      <!-- <table border>
 	<caption>Ventes</caption>
 	<tr>
 	  <th>Nom</th>
@@ -32,8 +40,8 @@
 	  <td>9</td>
 	  <td>21/01/2014</td>
 	</tr>
-      </table>
-      <table border>
+      </table> -->
+      <!-- <table border>
 	<caption>Achats</caption>
 	<tr>
 	  <th>Nom</th>
@@ -64,7 +72,7 @@
 	  </form>
 	</tr>	 
 	<% } %>
-      </table>
+      </table> -->
       <img src="./images/fleche.gif" alt="image marché inverse"/><a href="">Accédez au marché inverse !</a>
     </section>
 </div>    
