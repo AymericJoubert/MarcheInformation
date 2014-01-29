@@ -1,28 +1,26 @@
-// Servlet Test.java  de test de la configuration
-import java.io.*;
-import javax.servlet.*;
-import javax.servlet.http.*;
 import javax.naming.*;
 import java.sql.*;
 import javax.sql.*;
-import javax.servlet.annotation.WebServlet;
 
-@WebServlet("/servlet/ConnectionMarket")
-public class ConnectionMarket extends HttpServlet
+public class ConnectionMarket
 {
-  public void doPost( HttpServletRequest req, HttpServletResponse res ) 
-       throws ServletException, IOException
-  {
-    res.setContentType( "text/html" );
-    
-    Context initCtx = new InitialContext();
-    Context envCtx = (Context) initCtx.lookup("java:comp/env");
-    DataSource ds = (DataSource) envCtx.lookup("marche");
-    Connection con = ds.getConnection();
-    PreparedStatement st = con.prepareStatement("SELECT ? FROM marche WHERE marche_id = ?");
-    
-    ResultSet rs = st.("");
+  private Connection con;
+
+  public ConnectionMarket(){
+    con = null;
   }
 
+  public Connection getConnection() throws NamingException,SQLException{
+      Context initCtx = new InitialContext();
+      Context envCtx = (Context) initCtx.lookup("java:comp/env");
+      DataSource ds = (DataSource) envCtx.lookup("marche");
+      con = ds.getConnection();
 
+      return con;
+      }
+
+  public void closeConnection(){
+    if(con != null){
+    }
+  }
 }
