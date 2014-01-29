@@ -8,12 +8,12 @@
     <%@ page import="bdd.Market" %>
   </head>
   <body>
-    <%@ include file="hautdepage.html" %>
     <!-- <jsp:setProperty name="market" property="question" /> -->
     <% Market marche = new Market();
     	Market marcheInverse = new Market();
     	marche.getMarket(1) ;
     	marcheInverse.getMarket(2);%>
+    <%@ include file="hautdepage.html" %>
     <section id="marche">
       <h1>Marché</h1>
       <h2><%= marche.getTitre() %></h2>

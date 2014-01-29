@@ -6,14 +6,16 @@
     <title>Mache de l'Information - Login</title>
   </head>
   <body>    
-  <%@ include file="hautdepage.html" %>
-  <section id="marche">
-    <h3>Connectez vous pour accéder à plus de fonctionnalités !</h3>
-    <form name="bigfif" action="j_security_check" method="post">  
-      Username : <input type="text" name="j_username"><br>  
-      Password: <input type="password" name="j_password"><br>  
-      <input type="submit" value="submit">  
-    </form>
-  </section>
-  </div>
+    <%@ page import="bdd.Market" %>
+    <% Market marche = new Market(); %>
+    <%@ include file="hautdepage.html" %>
+    <section id="marche">
+      <h3>Connectez vous pour accéder à plus de fonctionnalités !</h3>
+      <form name="bigfif" action="j_security_check" method="post">  
+	Username : <input type="text" name="j_username"><br>  
+	Password: <input type="password" name="j_password"><br>  
+	<input type="submit" value="submit">  
+      </form>
+    </section>
+</div>
 </html>

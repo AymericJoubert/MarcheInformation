@@ -1,5 +1,9 @@
 <%@ page import="java.net.URLEncoder" %>
-<%@ page contentType="text/html; charset=utf-8" %>
+<%@ page contentType="text/html; charset=utf-8" %> 
+
+<jsp:useBean id="current_user" class="beans.Trader" scope="session" >
+<jsp:setProperty name="current_user" property="prenom" value="un_joli_prenom" />
+</jsp:useBean>
     <header>
       <div id="haut">
 	<div id="logo">
@@ -16,11 +20,17 @@
 	    <img src="images/profil.jpg" alt="imageProfil"/>
 	  </div>
 	  <div id="droite">
-	    <h4>Bienvenue Eirettab</h4>
+	    <% if(request.getRemoteUser()!=null) {%>
+	    <h4>Bienvenue <%= request.getRemoteUser()  %></h4>
 	    <p>
 	      Argent : 5000
 	      Titres : 5
 	    </p>
+	    <% } else { %>
+	    <jsp:getProperty name="current_user" property="prenom" />
+	    <a href="factice.jsp">Inscrivez Vous !</a>
+	    <% } %>
+
 	  </div>
 	</div>
       </div>
@@ -50,17 +60,6 @@
       
       <section id="bandeau">
 	<h3>Dernier March&eacute;s</h3>
-
-	<ul>
-	  <a href=""><li>Alex-D va se raser dans deux jours</li></a>
-	  <br/><br/>
-	  <a href=""><li>Axel Delerue va s'inscrire sur AdopteUnMec</li></a>
-	  <br/><br/>
-	  <a href=""><li>Pierre Gombert va faire un deuxieme enfant</li></a>
-	  <br/><br/>
-	  <a href=""><li>Fouad va arreter de jouer a pokemon</li></a>
-	  <br/><br/>
-	  <a href=""><li>Hugues va se teindre les cheveux en bleu</li></a>
-	</ul>
+	<%= marche.getLastMarkets() %>
       </section>
 

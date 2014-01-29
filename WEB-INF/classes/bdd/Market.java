@@ -83,7 +83,7 @@ public class Market{
 		String result = "<table id='market_table'> <tr><th>Nom</th><th>Quantité</th><th>Prix</th><th>Date</th></tr>";
 		while(rs.next()){
 			if(titre == null) titre = rs.getString(1);
-			if(idInverse == null) idInverse = rs.getString(6);
+			if(((Integer)idInverse) == null) idInverse = Integer.parseInt(rs.getString(6));
 			result += "<tr>";
 			result += "<td>"+rs.getString(2)+"</td>";
 			result +="<td>"+rs.getString(3)+"</td>";
@@ -96,7 +96,7 @@ public class Market{
 		con.close();
     }
 
-    public void getMarket(){
+    public void getMarket() throws SQLException, NamingException{
     	getMarket(idMarche);
     }
 
@@ -106,5 +106,22 @@ public class Market{
 
     public String getTable(){
     	return table;
+    }
+
+    public String getLastMarkets() throws SQLException, NamingException{
+	Connection con = getConnection();
+	PreparedStatement pst = con.prepareStatement("SELECT marche_id, question FROM marche LIMIT 5;");
+	ResultSet rs = pst.executeQuery();
+	String ret = "<ul>";
+	while(rs.next()){
+	    ret += "<a href='marche?id=";
+	    ret += rs.getString(1);
+	    ret += "'><li>";
+	    ret += rs.getString(2);
+	    ret += "</li></a>\n";
+	}
+	ret+="</ul>";
+	con.close();
+	return ret;
     }
 }

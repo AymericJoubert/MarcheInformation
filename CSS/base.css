@@ -141,7 +141,6 @@ ul a{
 
 #bandeau h3{
     text-align:center;
-    height:35px;
 }
 
 #bandeau ul{
@@ -182,4 +181,8 @@ footer{
 
 #market_table table,th,td{
     border: 1px solid black;
+}
+
+#bandeau ul li{
+    padding-top: 15px;
 }
