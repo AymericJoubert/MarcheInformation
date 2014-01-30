@@ -3,67 +3,61 @@
   <head>
     <meta http-equiv="Content-Type" CONTENT="text/html;charset=iso-8859-1">
     <link rel="stylesheet" type="text/css" href="CSS/base.css" /> 
-    <title>Mache de l'Information</title>
-    <!-- <jsp:useBean id="market" class="tools.Market" scope="page"/> -->
-    <%@ page import="bdd.ManagerMarket,mapping.Market,mapping.Offre" %>
+    <title>Marché de l'Information</title>
+    <%@ page import="bdd.ManagerMarket,mapping.Market,mapping.Offre,java.util.ArrayList" %>
   </head>
   <body>
   	<% try{%>
-    <!-- <jsp:setProperty name="market" property="question" /> -->
-    <% MarketManager marches = new MarketManager();
+    <% ManagerMarket marches = new ManagerMarket();
     	// le premier carnet
-    	Integer idMarche = (Integer)req.getParameter("market");
-    	if(id != null)
-    		marches.getMarket(idMarche);
-    	else
+      if(request.getParameter("market") != null){
+    	int idMarche = Integer.parseInt(request.getParameter("market"));
+        marches.getMarket(idMarche);
+      }else{
     		marches.getMarket();
-
+      }
     	// recupere le premier carnet
     	Market marche = marches.getMarches().get(0);
     	ArrayList<Offre> offres = marche.getOffres();
     	%>
-    <%@ include file="hautdepage.html" %>
+    <%@ include file="hautdepage.jsp" %>
     <section id="marche">
       <h1>Marché</h1>
       <h2><%= marche.getQuestion() %></h2>
-      <% if (!marche.getMarches().isEmpty()){%>
+      <% if(!offres.isEmpty()){%>
       <table id="market_table">
       	<tr>
       		<th>Nom</th><th>Quantité</th><th>Prix</th><th>Date</th>
       	</tr>
- 	<%for(Offre o : offres){
- 		if(o.getAcheteurInverse == null){%>
- 		<tr>
- 			<td>o.getAcheteur()</td><td>o.getQuantite()</td><td>o.getValeur()</td><td>o.getOffreDate()</td>
- 		</tr>
- 	<% }
- 	} %>
- </table>
+     	<%for(Offre o : offres){
+     		if(o.getAcheteurInverse() == null){%>
+     		<tr>
+     			<td>o.getAcheteur()</td><td>o.getQuantite()</td><td>o.getValeur()</td><td>o.getOffreDate()</td>
+     		</tr>
+     	<% }
+     	} %>
+     </table>
  <% } %>
 
  	<% // recupere le premier carnet
     	marche = marches.getMarches().get(1);
-    	ArrayList<Offre> offres = marche.getOffres();
+    	offres = marche.getOffres();
     	%>
-    <%@ include file="hautdepage.html" %>
-    <section id="marche">
-      <h1>Marché</h1>
-      <h2><%= marche.getQuestion() %></h2>
-      <% if (!marche.getMarches().isEmpty()){%>
+      <% if(!offres.isEmpty()){%>
       <table id="market_table">
       	<tr>
       		<th>Nom</th><th>Quantité</th><th>Prix</th><th>Date</th>
       	</tr>
  	<%for(Offre o : offres){
- 		if(o.getAcheteurInverse == null){%>
+ 		if(o.getAcheteurInverse() == null){%>
  		<tr>
  			<td>o.getAcheteur()</td><td>o.getQuantite()</td><td>o.getValeur()</td><td>o.getOffreDate()</td>
  		</tr>
- 	<% }
- 	} %>
+ 	  <%}%>
+ 	<%}%>
  </table>
  <% } %>
-	<!-- <% if(session.getAttribute("user_login")!=null) {%>
+	<!-- <% // if(session.getAttribute("user_login")!=null) {%>
 	<tr></tr>
 	<tr>
 	  <form>
@@ -73,7 +67,7 @@
 	    <td><input type="submit" value="Achetez !"/></td>
 	  </form>
 	</tr>	 
-	<% } %>
+	<% //} %>
       </table> -->
       <img src="./images/fleche.gif" alt="image marché inverse"/><a href="">Accédez au marché inverse !</a>
     </section>

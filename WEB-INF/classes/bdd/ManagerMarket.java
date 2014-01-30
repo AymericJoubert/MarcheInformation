@@ -11,42 +11,44 @@ public class ManagerMarket{
 	// id d'un des carnets de commmande
     private int idMarche;
     // les deux carnets sysmetriques
-    private ArrayList<Marche> marches;
+    private ArrayList<Market> marches;
 
 
-    public Market(){
+    public ManagerMarket(){
     	idMarche = 1;
-		offres = new ArrayList<Offre>();
-		offreInverse = new ArrayList<Offre>();
-		marches = new ArrayList<Marche>();
+		marches = new ArrayList<Market>();
     }
 
-    public void getMarket(int market) throws SQLException, NamingException{
-		Connection con = Connection.getConnection();
-		PreparedStatement pst = con.prepareStatement("SELECT m.question,o.acheteur,o.quantite,o.valeur,o.offre_date,m.inverse FROM marche as m LEFT JOIN offre as o ON o.marche = m.marche_id WHERE m.marche_id = ?;");
-		pst.setInt(1,market);
-		ResultSet rs = pst.executeQuery();
+    public void getMarket(int id) throws SQLException, NamingException{
+    	idMarche = id;
+    	Connection con = null;
+    	try{
+	    	con = ConnectionMarket.getConnection();
+			PreparedStatement pst = con.prepareStatement("SELECT m.question,o.acheteur,o.quantite,o.valeur,o.offre_date,m.inverse FROM marche as m LEFT JOIN offre as o ON o.marche = m.marche_id WHERE m.marche_id = ?;");
+			pst.setInt(1,idMarche);
+			ResultSet rs = pst.executeQuery();
 
-		// si la requete ne renvoie pas de resultat
+			rs.next();
+			Market market = new Market();
+			market.setQuestion(rs.getString(1));
+			marches.add(market);
+			idMarche = rs.getInt(6);
+			market.getOffres().add(setOffres(rs));
 
-		if(!rs.next()) return null;
-		Market market = new Market();
-		market.setQuestion(rs.getString(1));
-		marches.add(market);
-		idMarche = rs.getString(6);
-		market.getOffres().add(setOffre(rs));
-		while(rs.next()){
-			market.getOffres().add(setOffre(rs));
+			while(rs.next()){
+				market.getOffres().add(setOffres(rs));
+			}
+		}finally{
+			con.close();
 		}
-		con.close();
     }
 
-    private setOffres(ResultSet rs){
+    private Offre setOffres(ResultSet rs) throws SQLException{
     	Offre result = new Offre();
     	result.setAcheteur(rs.getString(2));
     	result.setQuantite(rs.getInt(3));
     	result.setValeur(rs.getInt(4));
-    	result.setDate(rs.getString(5));
+    	result.setOffreDate(new Date(rs.getLong(5)));
 
     	return result;
     }
@@ -56,24 +58,29 @@ public class ManagerMarket{
     	getMarket(idMarche);
     }
 
-    public getMarches(){
+    public ArrayList<Market> getMarches(){
     	return marches;
     }
 
     public String getLastMarkets() throws SQLException, NamingException{
-	Connection con = getConnection();
-	PreparedStatement pst = con.prepareStatement("SELECT marche_id, question FROM marche LIMIT 5;");
-	ResultSet rs = pst.executeQuery();
-	String ret = "<ul>";
-	while(rs.next()){
-	    ret += "<a href='marche?id=";
-	    ret += rs.getString(1);
-	    ret += "'><li>";
-	    ret += rs.getString(2);
-	    ret += "</li></a>\n";
-	}
-	ret+="</ul>";
-	con.close();
-	return ret;
+    	Connection con = null;
+    	String ret = "";
+	    try{
+			con = ConnectionMarket.getConnection();
+			PreparedStatement pst = con.prepareStatement("SELECT marche_id, question FROM marche LIMIT 5;");
+			ResultSet rs = pst.executeQuery();
+			ret = "<ul>";
+			while(rs.next()){
+			    ret += "<a href='marche?id=";
+			    ret += rs.getString(1);
+			    ret += "'><li>";
+			    ret += rs.getString(2);
+			    ret += "</li></a>\n";
+			}
+			ret+="</ul>";
+		}finally{
+			con.close();
+		}
+		return ret;
     }
 }

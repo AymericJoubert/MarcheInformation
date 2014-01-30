@@ -1,4 +1,4 @@
-package tools;
+package mapping;
 
 import java.util.Date;
 
@@ -71,7 +71,7 @@ public class Offre{
         return offreDate;
     }
 
-    public void set(Date date){
+    public void setOffreDate(Date date){
         offreDate = date;
     }
 }
