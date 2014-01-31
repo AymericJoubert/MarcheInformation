@@ -76,24 +76,30 @@ public class Market{
     }
 
     public void getMarket(int market) throws SQLException, NamingException{
-		Connection con = getConnection();
-		PreparedStatement pst = con.prepareStatement("SELECT m.question,o.acheteur,o.quantite,o.valeur,o.offre_date,m.inverse FROM marche as m LEFT JOIN offre as o ON o.marche = m.marche_id WHERE m.marche_id = ?;");
-		pst.setInt(1,market);
-		ResultSet rs = pst.executeQuery();
-		String result = "<table id='market_table'> <tr><th>Nom</th><th>Quantité</th><th>Prix</th><th>Date</th></tr>";
-		while(rs.next()){
-			if(titre == null) titre = rs.getString(1);
-			if(((Integer)idInverse) == null) idInverse = Integer.parseInt(rs.getString(6));
-			result += "<tr>";
-			result += "<td>"+rs.getString(2)+"</td>";
-			result +="<td>"+rs.getString(3)+"</td>";
-			result +="<td>"+rs.getString(4)+"</td>";
-			result +="<td>"+rs.getString(5)+"</td>";
-			result += "</tr>";
-		}
-		result += "</table>";
-		table = result;
-		con.close();
+	Connection con = null;
+	try{	
+	    con = getConnection();
+	    PreparedStatement pst = con.prepareStatement("SELECT m.question,o.acheteur,o.quantite,o.valeur,o.offre_date,m.inverse FROM marche as m LEFT JOIN offre as o ON o.marche = m.marche_id WHERE m.marche_id = ?;");
+	    pst.setInt(1,market);
+	    ResultSet rs = pst.executeQuery();
+	    String result = "<table id='market_table'> <tr><th>Nom</th><th>Quantité</th><th>Prix</th><th>Date</th></tr>";
+	    while(rs.next()){
+		if(titre == null) titre = rs.getString(1);
+		if(((Integer)idInverse) == null) idInverse = Integer.parseInt(rs.getString(6));
+		result += "<tr>";
+		result += "<td>"+rs.getString(2)+"</td>";
+		result +="<td>"+rs.getString(3)+"</td>";
+		result +="<td>"+rs.getString(4)+"</td>";
+		result +="<td>"+rs.getString(5)+"</td>";
+		result += "</tr>";
+	    }
+	    result += "</table>";
+	    table = result;
+	    con.close();
+	}
+	finally{
+	    con.close();
+	}
     }
 
     public void getMarket() throws SQLException, NamingException{
@@ -109,19 +115,24 @@ public class Market{
     }
 
     public String getLastMarkets() throws SQLException, NamingException{
-	Connection con = getConnection();
-	PreparedStatement pst = con.prepareStatement("SELECT marche_id, question FROM marche LIMIT 5;");
-	ResultSet rs = pst.executeQuery();
-	String ret = "<ul>";
-	while(rs.next()){
-	    ret += "<a href='marche?id=";
-	    ret += rs.getString(1);
-	    ret += "'><li>";
-	    ret += rs.getString(2);
-	    ret += "</li></a>\n";
+	Connection con = null;
+	try{
+	    con = getConnection();
+	    PreparedStatement pst = con.prepareStatement("SELECT marche_id, question FROM marche LIMIT 5;");
+	    ResultSet rs = pst.executeQuery();
+	    String ret = "<ul>";
+	    while(rs.next()){
+		ret += "<a href='marche?id=";
+		ret += rs.getString(1);
+		ret += "'><li>";
+		ret += rs.getString(2);
+		ret += "</li></a>\n";
+	    }
+	    ret+="</ul>";
+	    con.close();
+	    return ret;
+	}finally{
+	    con.close();
 	}
-	ret+="</ul>";
-	con.close();
-	return ret;
     }
 }
