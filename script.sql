@@ -84,3 +84,8 @@ insert into offre (valeur,quantite,marche,acheteur) values (38, 7, 2,2);
 
 insert into offre (valeur,quantite,marche,acheteur) values (38, 12, 4,1);
 insert into offre (valeur,quantite,marche,acheteur) values (47, 2, 3,2);
+
+update offre SET offre_date = '2014-01-05 11:30:45' where offre_id=1;
+update offre SET offre_date = '2013-12-22 10:30:45' where offre_id=4;
+update offre SET offre_date = '2013-12-18 11:30:45' where offre_id=3;
+update offre SET offre_date = '2013-12-14 11:30:45' where offre_id=2;

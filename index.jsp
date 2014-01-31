@@ -7,14 +7,13 @@
     <%@ page import="bdd.ManagerMarket,mapping.Market,mapping.Offre,java.util.ArrayList" %>
   </head>
   <body>
-  	<% try{%>
     <% ManagerMarket marches = new ManagerMarket();
     	// le premier carnet
       if(request.getParameter("market") != null){
     	int idMarche = Integer.parseInt(request.getParameter("market"));
-        marches.getMarket(idMarche);
+        marches.getSymetriquesMarkets(idMarche);
       }else{
-    		marches.getMarket();
+    		marches.getSymetriquesMarkets();
       }
     	// recupere le premier carnet
     	Market marche = marches.getMarches().get(0);
@@ -32,7 +31,7 @@
      	<%for(Offre o : offres){
      		if(o.getAcheteurInverse() == null){%>
      		<tr>
-     			<td>o.getAcheteur()</td><td>o.getQuantite()</td><td>o.getValeur()</td><td>o.getOffreDate()</td>
+     			<td><%= o.getAcheteur() %></td><td><%= o.getQuantite() %></td><td> <%= o.getValeur() %></td><td><%= o.getOffreDate() %></td>
      		</tr>
      	<% }
      	} %>
@@ -51,7 +50,7 @@
  	<%for(Offre o : offres){
  		if(o.getAcheteurInverse() == null){%>
  		<tr>
- 			<td>o.getAcheteur()</td><td>o.getQuantite()</td><td>o.getValeur()</td><td>o.getOffreDate()</td>
+      <td><%= o.getAcheteur() %></td><td><%= o.getQuantite() %></td><td> <%= o.getValeur() %></td><td><%= o.getOffreDate() %></td>
  		</tr>
  	  <%}%>
  	<%}%>
@@ -77,8 +76,6 @@
 	<h5>DA2I 2014 <br/>Mentions Légales - Tous droits réservés <br/> Blondeau - Joubert</h5>
       </div>
     </footer>
-    <% }catch(Exception e){%>
-    	<p id="erreur"><%= e%></p>
-    <%}%>
+    
   </body>
 </html>

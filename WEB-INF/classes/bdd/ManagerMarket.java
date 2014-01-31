@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.sql.*;
 import javax.sql.*;
 import javax.naming.*;
+import java.util.Calendar;
 
 import mapping.*;
 
@@ -19,12 +20,21 @@ public class ManagerMarket{
 		marches = new ArrayList<Market>();
     }
 
+    public void getSymetriquesMarkets() throws SQLException, NamingException{
+    	getSymetriquesMarkets(idMarche);
+    }
+
+    public void getSymetriquesMarkets(int id) throws SQLException, NamingException{
+    	getMarket(id);
+    	getMarket();
+    }
+
     public void getMarket(int id) throws SQLException, NamingException{
     	idMarche = id;
     	Connection con = null;
     	try{
 	    	con = ConnectionMarket.getConnection();
-			PreparedStatement pst = con.prepareStatement("SELECT m.question,o.acheteur,o.quantite,o.valeur,o.offre_date,m.inverse FROM marche as m LEFT JOIN offre as o ON o.marche = m.marche_id WHERE m.marche_id = ?;");
+			PreparedStatement pst = con.prepareStatement("SELECT m.question,u.user_name,o.quantite,o.valeur,o.offre_date,m.inverse FROM (marche as m LEFT JOIN offre as o ON o.marche = m.marche_id) LEFT JOIN users as u ON u.user_id = o.acheteur WHERE m.marche_id = ?;");
 			pst.setInt(1,idMarche);
 			ResultSet rs = pst.executeQuery();
 
@@ -45,12 +55,22 @@ public class ManagerMarket{
 
     private Offre setOffres(ResultSet rs) throws SQLException{
     	Offre result = new Offre();
+    	String[] jour,heure,tmp;
+    	Calendar cal = Calendar.getInstance();
     	result.setAcheteur(rs.getString(2));
     	result.setQuantite(rs.getInt(3));
     	result.setValeur(rs.getInt(4));
-    	result.setOffreDate(new Date(rs.getLong(5)));
+    	tmp = rs.getString(5).split(" ");
+    	if(tmp.length > 0){
+    		jour = tmp[0].split("-",3);
+    		heure = tmp[1].split(":",3);
+    		cal.set(Integer.parseInt(jour[0]),Integer.parseInt(jour[1]),Integer.parseInt(jour[2]),Integer.parseInt(heure[0]),Integer.parseInt(heure[1]),Integer.parseInt(heure[2]));
+    		result.setOffreDate(cal);
+    	}
 
-    	return result;
+
+		return result;
+
     }
 
     public void getMarket() throws SQLException, NamingException{

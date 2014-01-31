@@ -1,12 +1,12 @@
 package mapping;
 
-import java.util.Date;
+import java.util.Calendar;
 
 public class Offre{
 
     private int offreId, valeur, quantite, marche;
     private String acheteur,acheteurInverse;
-    private Date offreDate;
+    private Calendar offreDate;
 
     public Offre(){
         offreId = 0;
@@ -67,11 +67,11 @@ public class Offre{
         acheteurInverse = acheteur;
     }
 
-    public Date getOffreDate(){
+    public Calendar getOffreDate(){
         return offreDate;
     }
 
-    public void setOffreDate(Date date){
+    public void setOffreDate(Calendar date){
         offreDate = date;
     }
 }
