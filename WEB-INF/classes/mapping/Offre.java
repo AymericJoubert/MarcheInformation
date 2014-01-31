@@ -1,6 +1,7 @@
 package mapping;
 
 import java.util.Calendar;
+import java.text.SimpleDateFormat;
 
 public class Offre{
 
@@ -73,5 +74,10 @@ public class Offre{
 
     public void setOffreDate(Calendar date){
         offreDate = date;
+    }
+
+    public String toStringDate(){
+        SimpleDateFormat dsf = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
+        return dsf.format(offreDate.getTime());
     }
 }

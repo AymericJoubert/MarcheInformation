@@ -31,7 +31,7 @@
      	<%for(Offre o : offres){
      		if(o.getAcheteurInverse() == null){%>
      		<tr>
-     			<td><%= o.getAcheteur() %></td><td><%= o.getQuantite() %></td><td> <%= o.getValeur() %></td><td><%= o.getOffreDate() %></td>
+     			<td><%= o.getAcheteur() %></td><td><%= o.getQuantite() %></td><td> <%= o.getValeur() %></td><td><%= o.getOffreDate().getTime() %></td>
      		</tr>
      	<% }
      	} %>
