@@ -54,8 +54,11 @@
       </nav>
       
       <section id="bandeau">
-	<h3>Dernier March&eacute;s</h3>
-	<% ManagerMarket listeMarche = new ManagerMarket();
-		listeMarche.getLastMarkets(); %>
+		<h3>Derniers March&eacute;s</h3>
+		<% ManagerMarket listeMarche = new ManagerMarket(); %>
+		<%= listeMarche.getLastMarkets() %>
+
+		<h3>Derniers March&eacute;s ferm&eacute;s</h3>
+		<%= listeMarche.getHistoriqueMarkets() %>
       </section>
 

@@ -5,6 +5,9 @@ import java.sql.*;
 import javax.sql.*;
 import javax.naming.*;
 import java.util.Calendar;
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
+import java.util.Date;
 
 import mapping.*;
 
@@ -87,11 +90,12 @@ public class ManagerMarket{
     	String ret = "";
 	    try{
 			con = ConnectionMarket.getConnection();
-			PreparedStatement pst = con.prepareStatement("SELECT marche_id, question FROM marche LIMIT 5;");
+			PreparedStatement pst = con.prepareStatement("SELECT marche_id, question FROM marche WHERE fermeture > ? ORDER BY ouverture, question ASC LIMIT 5;");
+            pst.setTimestamp(1,new Timestamp(new Date().getTime()));
 			ResultSet rs = pst.executeQuery();
 			ret = "<ul>";
 			while(rs.next()){
-			    ret += "<a href='marche?id=";
+			    ret += "<a href='index.jsp?market=";
 			    ret += rs.getString(1);
 			    ret += "'><li>";
 			    ret += rs.getString(2);
@@ -102,5 +106,30 @@ public class ManagerMarket{
 			con.close();
 		}
 		return ret;
+    }
+
+    public String getHistoriqueMarkets() throws SQLException, NamingException,ParseException{
+        Connection con = null;
+        String ret = "";
+
+        try{
+            con = ConnectionMarket.getConnection();
+            PreparedStatement pst = con.prepareStatement("SELECT marche_id, question FROM marche WHERE fermeture < ? ORDER BY fermeture, ouverture , question ASC LIMIT 5;");
+            //PreparedStatement pst = con.prepareStatement("SELECT marche_id, question FROM marche WHERE fermeture < '2014-02-13 00:00:00' ORDER BY fermeture, ouverture , question ASC LIMIT 5;");
+            pst.setTimestamp(1,new Timestamp(new Date().getTime()));
+            ResultSet rs = pst.executeQuery();
+            ret = "<ul>";
+            while(rs.next()){
+                ret += "<a href='index.jsp?market=";
+                ret += rs.getString(1);
+                ret += "'><li>";
+                ret += rs.getString(2);
+                ret += "</li></a>\n";
+            }
+            ret+="</ul>";
+        }finally{
+            con.close();
+        }
+        return ret;
     }
 }

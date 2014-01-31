@@ -133,6 +133,7 @@ ul a{
 #bandeau{
     background-color: rgb(210,210,210);
     margin-top:10px;
+    margin-bottom: 10px;
     border-radius: 5px;
     width: 250px;
     float:right;
