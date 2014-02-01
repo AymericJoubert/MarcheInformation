@@ -116,7 +116,7 @@ public class ManagerMarket{
 
         try{
             con = ConnectionMarket.getConnection();
-            PreparedStatement pst = con.prepareStatement("SELECT marche_id, question FROM marche WHERE fermeture < ? ORDER BY fermeture, ouverture , question ASC LIMIT 5;");
+            PreparedStatement pst = con.prepareStatement("SELECT marche_id, question FROM marche WHERE fermeture < ? ORDER BY fermeture, question, ouverture ASC LIMIT 5;");
             //PreparedStatement pst = con.prepareStatement("SELECT marche_id, question FROM marche WHERE fermeture < '2014-02-13 00:00:00' ORDER BY fermeture, ouverture , question ASC LIMIT 5;");
             pst.setTimestamp(1,new Timestamp(new Date().getTime()));
             ResultSet rs = pst.executeQuery();
