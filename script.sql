@@ -10,6 +10,7 @@ DROP TABLE IF EXISTS offre;
 DROP TABLE IF EXISTS marche;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS users_confirm;
+DROP TABLE IF EXISTS user_roles;
 
 CREATE TABLE users(
   user_id serial,
@@ -22,6 +23,10 @@ CREATE TABLE users(
   CONSTRAINT pk_user_id PRIMARY KEY (user_id)
 );
 
+CREATE TABLE user_roles(
+  user_name varchar(255),
+  role_name varchar(255)
+);
 
 --
 -- Table des inscriptions
@@ -80,6 +85,8 @@ CREATE TABLE offre(
 
 insert into users (user_name, user_pass, nom,prenom,cash) values ('blondeah', 'fifou', 'pirex','paul',10000);
 insert into users (user_name, user_pass, nom,prenom,cash) values ('aymeric', 'fifou', 'bouicx','pierre',10000);
+insert into user_roles values ('aymeric','role1');
+insert into user_roles values ('blondeah','role1');
 
 --insert into marche (createur,question,ouverture,fermeture) values (,,CURRENT_DATE,);
 
@@ -89,7 +96,7 @@ UPDATE marche SET inverse = 2 WHERE marche_id = 1;
 
 
 insert into marche (createur,question,ouverture,fermeture) values (2,'Demode va arriver à l heure une fois en janvier?',CURRENT_DATE,'2014-02-01');
-insert into marche (createur,question,ouverture,fermeture,inverse) values (2,'Demode n arrivera jamais à l heure en janvier',CURRENT_DATE,'2014-02-01',1);
+insert into marche (createur,question,ouverture,fermeture,inverse) values (2,'Demode n arrivera jamais à l heure en janvier',CURRENT_DATE,'2014-02-01',3);
 UPDATE marche SET inverse = 4 WHERE marche_id = 3;
 
 --

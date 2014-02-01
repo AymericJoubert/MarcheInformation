@@ -43,7 +43,7 @@
 	</div>
       </div>
     </header>
-
+    
     <div id="container">
       <nav>
 	<div id="menu">
@@ -51,7 +51,7 @@
 	    <a href=""><li>Les march&eacute;s</li></a>
 	    <a href=""><li>Compte</li></a>
 	    <% if(request.getRemoteUser()!=null) {%>
-	    <a href="login.jsp"><li>Deconnection</li></a>
+	    <a href="logout.jsp"><li>Deconnection</li></a>
 	    <% } else { %>
 	    <a href="factice.jsp"><li>Connection</li></a>
 	    <% } %>
