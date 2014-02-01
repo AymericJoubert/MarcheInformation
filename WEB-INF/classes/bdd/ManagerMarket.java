@@ -37,20 +37,22 @@ public class ManagerMarket{
     	Connection con = null;
     	try{
 	    	con = ConnectionMarket.getConnection();
-			PreparedStatement pst = con.prepareStatement("SELECT m.question,u.user_name,o.quantite,o.valeur,o.offre_date,m.inverse FROM (marche as m LEFT JOIN offre as o ON o.marche = m.marche_id) LEFT JOIN users as u ON u.user_id = o.acheteur WHERE m.marche_id = ?;");
+			PreparedStatement pst = con.prepareStatement("SELECT m.question,u.user_name,o.quantite,o.valeur,o.offre_date,m.inverse,m.marche_id FROM (marche as m LEFT JOIN offre as o ON o.marche = m.marche_id) LEFT JOIN users as u ON u.user_id = o.acheteur WHERE m.marche_id = ?;");
 			pst.setInt(1,idMarche);
 			ResultSet rs = pst.executeQuery();
 
-			rs.next();
-			Market market = new Market();
-			market.setQuestion(rs.getString(1));
-			marches.add(market);
-			idMarche = rs.getInt(6);
-			market.getOffres().add(setOffres(rs));
+			if(rs.next()){
+    			Market market = new Market();
+    			market.setQuestion(rs.getString(1));
+                market.setMarcheId(rs.getInt(7));
+    			marches.add(market);
+    			idMarche = rs.getInt(6);
+    			market.getOffres().add(setOffres(rs));
 
-			while(rs.next()){
-				market.getOffres().add(setOffres(rs));
-			}
+    			while(rs.next()){
+    				market.getOffres().add(setOffres(rs));
+    			}
+        }
 		}finally{
 			con.close();
 		}
