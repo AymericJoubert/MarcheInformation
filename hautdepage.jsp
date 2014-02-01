@@ -1,18 +1,18 @@
-<%@ page import="java.net.URLEncoder,bdd.ManagerMarket" %>
-<%@ page contentType="text/html; charset=utf-8" %> 
-<%@ page import="bdd.Trader" %>
 
-<%@ page import="bdd.Market" %>
-<%
+<!doctype html >
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="CSS/base.css" /> 
+    <title>Marché de l'Information</title>
+    <%@ page import="java.net.URLEncoder,bdd.ManagerMarket,bdd.Trader" %>
+<%  
    if(request.getRemoteUser()!=null){
    Trader current_user = new Trader(request.getRemoteUser());
    }
 %>
-    <% Market marche = new Market();
-    	Market marcheInverse = new Market();
-    	marche.getMarket(1) ;
-    	marcheInverse.getMarket(2);
-	%>
+  </head>
+  <body>
     <header>
       <div id="haut">
 	<div id="logo">
