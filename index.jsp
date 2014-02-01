@@ -1,5 +1,6 @@
     <%@ page import="bdd.ManagerMarket,mapping.Market,mapping.Offre,java.util.ArrayList" %>
      <%@ include file="hautdepage.jsp" %>
+
     <% ManagerMarket marches = new ManagerMarket();
     	// le premier carnet
       if(request.getParameter("market") != null){
@@ -12,7 +13,8 @@
     	Market marche = marches.getMarches().get(0);
     	ArrayList<Offre> offres = marche.getOffres();
     	%>
- 
+
+    <%@ include file="hautdepage.jsp" %>
     <section id="marche">
       <h1>Marché</h1>
       <h2><%= marche.getQuestion() %></h2>

@@ -2,6 +2,8 @@ package mapping;
 
 import java.util.Date;
 import java.util.ArrayList;
+import mapping.Offre;
+
 public class Market {
 
     private int marcheId, createur, inverse;

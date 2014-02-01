@@ -1,20 +1,18 @@
-<%@ page import="java.net.URLEncoder" %>
+<%@ page import="java.net.URLEncoder,bdd.ManagerMarket" %>
 <%@ page contentType="text/html; charset=utf-8" %> 
 <%@ page import="bdd.Trader" %>
+
 <%@ page import="bdd.Market" %>
+<%
+   if(request.getRemoteUser()!=null){
+   Trader current_user = new Trader(request.getRemoteUser());
+   }
+%>
     <% Market marche = new Market();
     	Market marcheInverse = new Market();
     	marche.getMarket(1) ;
     	marcheInverse.getMarket(2);
 	%>
- <!doctype html >
-<html>
-  <head>
-    <meta http-equiv="Content-Type" CONTENT="text/html;charset=iso-8859-1">
-    <link rel="stylesheet" type="text/css" href="CSS/base.css" /> 
-    <title>Mache de l'Information</title>
-  </head>
-  <body>
     <header>
       <div id="haut">
 	<div id="logo">
@@ -33,9 +31,9 @@
 	  <div id="droite">
 	    <% if(request.getRemoteUser()!=null) {%>
 	    <h4>Bienvenue <%= request.getRemoteUser()  %></h4>
-	    <% Trader current_user = new Trader(request.getRemoteUser());%>
 	    <p>
-	      Argent : <%= current_user.getCash() %><br/>
+	      Argent : 5000
+	      Titres : 5
 	    </p>
 	    <% } else { %>
 	    <a href="factice.jsp">Inscrivez Vous !</a>
@@ -50,10 +48,10 @@
       <nav>
 	<div id="menu">
 	  <ul>
-	    <a href="index.jsp"><li>Les march&eacute;s</li></a>
-	    <a href="compte.jsp"><li>Compte</li></a>
+	    <a href=""><li>Les march&eacute;s</li></a>
+	    <a href=""><li>Compte</li></a>
 	    <% if(request.getRemoteUser()!=null) {%>
-	    <a href="logout.jsp"><li>Deconnection</li></a>
+	    <a href="login.jsp"><li>Deconnection</li></a>
 	    <% } else { %>
 	    <a href="factice.jsp"><li>Connection</li></a>
 	    <% } %>
@@ -69,8 +67,11 @@
       </nav>
       
       <section id="bandeau">
-	<h3>Derniers March&eacute;s Ouverts</h3>
-	<%= marche.getLastMarkets() %>
-	<h3>Derniers March&eacute;s Ferm&eacute;s</h3>
+		<h3>Derniers March&eacute;s</h3>
+		<% ManagerMarket listeMarche = new ManagerMarket(); %>
+		<%= listeMarche.getLastMarkets() %>
+
+		<h3>Derniers March&eacute;s ferm&eacute;s</h3>
+		<%= listeMarche.getHistoriqueMarkets() %>
       </section>
 

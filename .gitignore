@@ -4,3 +4,4 @@ WEB-INF/*~
 CSS/*~
 WEB-INF/classes/*~
 WEB-INF/classes/tools/*~
+META-INF/context.xml

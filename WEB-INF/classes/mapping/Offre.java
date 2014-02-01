@@ -1,12 +1,13 @@
-package tools;
+package mapping;
 
-import java.util.Date;
+import java.util.Calendar;
+import java.text.SimpleDateFormat;
 
 public class Offre{
 
     private int offreId, valeur, quantite, marche;
     private String acheteur,acheteurInverse;
-    private Date offreDate;
+    private Calendar offreDate;
 
     public Offre(){
         offreId = 0;
@@ -67,11 +68,16 @@ public class Offre{
         acheteurInverse = acheteur;
     }
 
-    public Date getOffreDate(){
+    public Calendar getOffreDate(){
         return offreDate;
     }
 
-    public void set(Date date){
+    public void setOffreDate(Calendar date){
         offreDate = date;
+    }
+
+    public String toStringDate(){
+        SimpleDateFormat dsf = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
+        return dsf.format(offreDate.getTime());
     }
 }
