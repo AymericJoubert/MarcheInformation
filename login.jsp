@@ -6,9 +6,7 @@
     <title>Mache de l'Information - Login</title>
   </head>
   <body>    
-    <%@ page import="bdd.Market" %>
-    <% Market marche = new Market(); %>
-    <%@ include file="hautdepage.html" %>
+    <%@ include file="hautdepage.jsp" %>
     <section id="marche">
       <h3>Connectez vous pour accéder à plus de fonctionnalités !</h3>
       <form name="bigfif" action="j_security_check" method="post">  

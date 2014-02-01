@@ -19,12 +19,24 @@ PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
     </init-param>
     <load-on-startup>2</load-on-startup>
   </servlet>
-  
-  <servlet-mapping>
-    <servlet-name>invoker</servlet-name>
-    <url-pattern>/servlet/*</url-pattern>
-  </servlet-mapping>
 
+
+  
+  <!--<servlet-mapping>
+    <servlet-name>invoker</servlet-name>
+    <url-pattern>servlet/*</url-pattern>
+  </servlet-mapping>-->
+
+
+   <!--<servlet>
+        <servlet-name>Inscription</servlet-name>
+        <servlet-class>Inscription</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>Inscription</servlet-name>
+        <url-pattern>/Inscription</url-pattern>
+    </servlet-mapping>-->
 
   <!-- Parametrages propres a cette application web -->
   <context-param>

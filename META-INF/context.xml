@@ -3,7 +3,7 @@
   <!-- Definition du pool -->
   <Resource name="marche" auth="Container" type="javax.sql.DataSource"
 	    maxActive="8" maxIdle="4" maxWait="10000"
-	    username="blondeah" password="moi" driverClassName="org.postgresql.Driver"
+	    username="jouberta" password="moi" driverClassName="org.postgresql.Driver"
 	    url="jdbc:postgresql://sqlserv/da2i" />
   
   <!-- Definition du Realm sans pool -->
@@ -20,7 +20,7 @@
   
   
       <Realm  className="org.apache.catalina.realm.DataSourceRealm" debug="99"
-      dataSourceName="mabase" localDataSource="true"
+      dataSourceName="marche" localDataSource="true"
       userTable="users" userNameCol="user_name" userCredCol="user_pass"
       userRoleTable="user_roles" roleNameCol="role_name"  />
  

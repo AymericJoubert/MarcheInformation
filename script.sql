@@ -8,15 +8,36 @@
 --
 DROP TABLE IF EXISTS offre;
 DROP TABLE IF EXISTS marche;
-DROP TABLE IF EXISTS trader;
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS users_confirm;
 
-CREATE TABLE trader(
-  trader_id serial,
+CREATE TABLE users(
+  user_id serial,
+  user_name varchar(255) UNIQUE,
+  user_pass varchar(255),
   nom varchar(255),
   prenom varchar(255),
+  email varchar(255),
   cash int,
-  CONSTRAINT pk_trader_id PRIMARY KEY (trader_id)
+  CONSTRAINT pk_user_id PRIMARY KEY (user_id)
 );
+
+
+--
+-- Table des inscriptions
+--
+
+CREATE TABLE users_confirm(
+  user_name varchar(255) UNIQUE,
+  user_pass varchar(255),
+  nom varchar(255),
+  prenom varchar(255),
+  email varchar(255),
+  confirm_code varchar(255),
+  CONSTRAINT pk_user_confirm_id PRIMARY KEY (user_name)
+);
+
+
 
 --
 -- Table des marché de l'information
@@ -27,8 +48,8 @@ CREATE TABLE marche(
   marche_id serial,
   createur int,
   question varchar(255),
-  ouverture date,
-  fermeture date,
+  ouverture timestamp,
+  fermeture timestamp,
   inverse int,
   CONSTRAINT pk_marche_id PRIMARY KEY (marche_id),
   CONSTRAINT fk_createur FOREIGN KEY (createur) REFERENCES trader (trader_id),
@@ -46,7 +67,7 @@ CREATE TABLE offre(
   marche int,
   acheteur int,
   acheteur_inverse int,
-  offre_date date,
+  offre_date timestamp,
   CONSTRAINT pk_offre_id PRIMARY KEY (offre_id),
   CONSTRAINT fk_marche FOREIGN KEY (marche) REFERENCES marche (marche_id),
   CONSTRAINT fk_acheteur FOREIGN KEY (acheteur) REFERENCES trader (trader_id),
@@ -57,8 +78,8 @@ CREATE TABLE offre(
 -- Quelques lignes pour tester
 --
 
-insert into trader (nom,prenom,cash) values ('pirex','paul',10000);
-insert into trader (nom,prenom,cash) values ('bouicx','pierre',10000);
+insert into users (user_name, user_pass, nom,prenom,cash) values ('blondeah', 'fifou', 'pirex','paul',10000);
+insert into users (user_name, user_pass, nom,prenom,cash) values ('aymeric', 'fifou', 'bouicx','pierre',10000);
 
 --insert into marche (createur,question,ouverture,fermeture) values (,,CURRENT_DATE,);
 
