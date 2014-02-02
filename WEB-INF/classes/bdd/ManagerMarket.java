@@ -65,8 +65,13 @@ public class ManagerMarket{
     	result.setAcheteur(rs.getString(2));
     	result.setQuantite(rs.getInt(3));
     	result.setValeur(rs.getInt(4));
-    	tmp = rs.getString(5).split(" ");
-    	if(tmp.length > 0){
+        if(rs.getString(5).matches("\.")){
+            tmp = rs.getString(5).split(".",2);
+            tmp = tmp[0].split(" ");
+        }
+        else
+            tmp = rs.getString(5).split(" ");
+        if(tmp.length > 0){
     		jour = tmp[0].split("-",3);
     		heure = tmp[1].split(":",3);
     		cal.set(Integer.parseInt(jour[0]),Integer.parseInt(jour[1]),Integer.parseInt(jour[2]),Integer.parseInt(heure[0]),Integer.parseInt(heure[1]),Integer.parseInt(heure[2]));

@@ -1,4 +1,4 @@
-package bdd;
+package mapping;
 
 import java.sql.*;
 import javax.naming.*;

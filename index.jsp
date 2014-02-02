@@ -26,7 +26,7 @@
               <td><input type="text" name="quantite"/></td>
               <td><input type="text" name="prix"/></td>
               <td><input type="submit" value="Achetez !"/></td>
-              <input type="hidden" value="<%= marche.getInverse() %>">
+              <input type="hidden" name="market" value="<%= marche.getMarcheId() %>"/>
             </form>
           </tr>  
         <% } %>
@@ -65,7 +65,7 @@
 </div>    
 <footer>
       <div id="infs">
-	<h5>DA2I 2014 <br/>Mentions Légales - Tous droits réservés <br/> Blondeau - Joubert</h5>
+	<h5>DA2I 2014 <br /><a alt="video marche financier" href="http://www.youtube.com/watch?v=gxXhwaZewlQ">Explication video marché financier</a><br/>Mentions Légales - Tous droits réservés <br/> Blondeau - Joubert</h5>
       </div>
     </footer>
     

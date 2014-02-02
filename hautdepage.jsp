@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="CSS/base.css" /> 
     <title>Marché de l'Information</title>
-    <%@ page import="java.net.URLEncoder,bdd.ManagerMarket,bdd.Trader" %>
+    <%@ page import="java.net.URLEncoder,bdd.ManagerMarket,mapping.Trader" %>
 <%  
    if(request.getRemoteUser()!=null){
    Trader current_user = new Trader(request.getRemoteUser());
