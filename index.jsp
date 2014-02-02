@@ -19,6 +19,17 @@
       <h2><%= marche.getQuestion() %></h2>
       <% if(!offres.isEmpty()){%>
       <table id="market_table">
+        <%  if(request.getRemoteUser()!=null) {%> 
+          <tr>
+            <form method='post' action='OffreManager'>
+              <td><%= request.getRemoteUser() %></td>
+              <td><input type="text" name="quantite"/></td>
+              <td><input type="text" name="prix"/></td>
+              <td><input type="submit" value="Achetez !"/></td>
+              <input type="hidden" value="<%= marche.getInverse() %>">
+            </form>
+          </tr>  
+        <% } %>
       	<tr>
       		<th>Nom</th><th>Quantité</th><th>Prix</th><th>Date</th>
       	</tr>
@@ -31,16 +42,13 @@
      	} %>
      </table>
  <% } %>
-
+<HR>
  	<% // recupere le premier carnet
     	marche = marches.getMarches().get(1);
     	offres = marche.getOffres();
     	%>
       <% if(!offres.isEmpty()){%>
       <table id="market_table">
-      	<tr>
-      		<th>Nom</th><th>Quantité</th><th>Prix</th><th>Date</th>
-      	</tr>
  	<%for(Offre o : offres){
  		if(o.getAcheteurInverse() == null){%>
  		<tr>
@@ -50,18 +58,8 @@
  	<%}%>
  </table>
  <% } %>
-	<!-- <% // if(session.getAttribute("user_login")!=null) {%>
-	<tr></tr>
-	<tr>
-	  <form>
-	    <td></td>
-	    <td><input type="text" name="quantite"/></td>
-	    <td><input type="text" name="prix"/></td>
-	    <td><input type="submit" value="Achetez !"/></td>
-	  </form>
-	</tr>	 
-	<% //} %>
-      </table> -->
+	
+      </table>
       <img src="./images/fleche.gif" alt="image marché inverse"/><a href="index.jsp?market=<%= marche.getMarcheId()%>">Accédez au marché inverse !</a>
     </section>
 </div>    
