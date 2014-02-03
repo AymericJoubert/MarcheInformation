@@ -7,8 +7,9 @@
     <title>Marché de l'Information</title>
     <%@ page import="java.net.URLEncoder,bdd.ManagerMarket,mapping.Trader" %>
 <%  
+	Trader current_user = null;
    if(request.getRemoteUser()!=null){
-   Trader current_user = new Trader(request.getRemoteUser());
+   	current_user = new Trader(request.getRemoteUser());
    }
 %>
   </head>
@@ -30,9 +31,9 @@
 	  </div>
 	  <div id="droite">
 	    <% if(request.getRemoteUser()!=null) {%>
-	    <h4>Bienvenue <%= request.getRemoteUser()  %></h4>
+	    <h4>Bienvenue <%= request.getRemoteUser() %></h4>
 	    <p>
-	      Argent : 5000
+	      Cash : <%= current_user.getCash() %>
 	      Titres : 5
 	    </p>
 	    <% } else { %>
