@@ -8,6 +8,7 @@ import java.util.Calendar;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.regex.Pattern;
 
 import mapping.*;
 
@@ -65,12 +66,12 @@ public class ManagerMarket{
     	result.setAcheteur(rs.getString(2));
     	result.setQuantite(rs.getInt(3));
     	result.setValeur(rs.getInt(4));
-        if(rs.getString(5).matches("\.")){
-            tmp = rs.getString(5).split(".",2);
-            tmp = tmp[0].split(" ");
-        }
-        else
-            tmp = rs.getString(5).split(" ");
+        // if(rs.getString(5).matches("\.")){
+             tmp = rs.getString(5).split(Pattern.quote("."),2);
+             tmp = tmp[0].split(" ");
+        // }
+        // else
+        //    tmp = rs.getString(5).split(" ");
         if(tmp.length > 0){
     		jour = tmp[0].split("-",3);
     		heure = tmp[1].split(":",3);
