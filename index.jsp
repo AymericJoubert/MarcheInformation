@@ -19,24 +19,15 @@
       <h2><%= marche.getQuestion() %></h2>
       <% if(!offres.isEmpty()){%>
       <table id="market_table">
-        <%  if(request.getRemoteUser()!=null) {%> 
-          <tr>
-            <form method='post' action='OffreManager'>
-              <td><%= request.getRemoteUser() %></td>
-              <td><input type="text" name="quantite"/></td>
-              <td><input type="text" name="prix"/></td>
-              <td><input type="submit" value="Achetez !"/></td>
-              <input type="hidden" name="market" value="<%= marche.getMarcheId() %>"/>
-            </form>
-          </tr>  
-        <% } %>
       	<tr>
-      		<th>Nom</th><th>Quantité</th><th>Prix</th><th>Date</th>
-      	</tr>
+      		<th>Quantité</th><th>Prix</th>
+      	</tr>    
+          
+        </tr>
      	<%for(Offre o : offres){
      		if(o.getAcheteurInverse() == null){%>
      		<tr>
-     			<td><%= o.getAcheteur() %></td><td><%= o.getQuantite() %></td><td> <%= o.getValeur() %></td><td><%= o.toStringDate() %></td>
+     			<td><%= o.getQuantite() %></td><td> <%= o.getValeur() %></td>
      		</tr>
      	<% }
      	} %>
@@ -48,18 +39,25 @@
     	offres = marche.getOffres();
     	%>
       <% if(!offres.isEmpty()){%>
-      <table id="market_table">
- 	<%for(Offre o : offres){
- 		if(o.getAcheteurInverse() == null){%>
- 		<tr>
-      <td><%= o.getAcheteur() %></td><td><%= o.getQuantite() %></td><td> <%= o.getValeur() %></td><td><%= o.toStringDate() %></td>
- 		</tr>
- 	  <%}%>
- 	<%}%>
- </table>
- <% } %>
-	
-      </table>
+        <table id="market_table">
+         	<%for(Offre o : offres){
+         		if(o.getAcheteurInverse() == null){%>
+         		<tr>
+              <td><%= o.getQuantite() %></td><td> <%= o.getValeur() %></td>
+         	  <%}%>
+         	<%}%>
+       </table>
+     <% } %>
+
+	<%  if(request.getRemoteUser()!=null) {%> 
+            <form method='post' action='OffreManager'>
+              <td><input type="text" name="quantite"/></td>
+              <td><input type="text" name="prix"/></td>
+              <td><input type="submit" value="Achetez !"/></td>
+              <input type="hidden" name="market" value="<%= marche.getMarcheId() %>"/>
+            </form>
+        <% } %>
+        
       <img src="./images/fleche.gif" alt="image marché inverse"/><a href="index.jsp?market=<%= marche.getMarcheId()%>">Accédez au marché inverse !</a>
     </section>
 </div>    

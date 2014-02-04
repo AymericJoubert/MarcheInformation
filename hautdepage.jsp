@@ -49,7 +49,7 @@
       <nav>
 	<div id="menu">
 	  <ul>
-	    <a href=""><li>Les march&eacute;s</li></a>
+	    <a href="index.jsp"><li>Les march&eacute;s</li></a>
 	    <a href=""><li>Compte</li></a>
 	    <% if(request.getRemoteUser()!=null) {%>
 	    <a href="logout.jsp"><li>Deconnection</li></a>

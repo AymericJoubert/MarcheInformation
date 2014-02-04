@@ -24,24 +24,24 @@ public class ManagerMarket{
 		marches = new ArrayList<Market>();
     }
 
-    public void getSymetriquesMarkets() throws SQLException, NamingException{
+    public void getSymetriquesMarkets() throws SQLException, NamingException {
     	getSymetriquesMarkets(idMarche);
     }
 
-    public void getSymetriquesMarkets(int id) throws SQLException, NamingException{
+    public void getSymetriquesMarkets(int id) throws SQLException, NamingException {
     	getMarket(id);
     	getMarket();
     }
 
-    public void getMarket(int id) throws SQLException, NamingException{
+    public void focusMarket(int id) throws SQLException, NamingException {
     	idMarche = id;
     	Connection con = null;
+        int valeur,quantite;
+        String acheteur, offreDate;
+
     	try{
 	    	con = ConnectionMarket.getConnection();
-            /* la requête qui va bien
-            * SELECT m.question,count(valeur) as quantite,o.valeur,m.inverse FROM marche as m LEFT JOIN offre as o ON o.marche = m.marche_id WHERE m.marche_id = 1 GROUP BY m.inverse,m.question,o.valeur ORDER BY o.valeur ASC;
-            */
-            /* cette requête est plus faite pour afficher le détail dans la rubrique historique ou détail */
+            
 			PreparedStatement pst = con.prepareStatement("SELECT m.question,u.user_name,count(valeur) as quantite,o.valeur,to_char(o.offre_date,'DD/MM/YYYY HH24:MI:SS') as date,m.inverse,m.marche_id FROM (marche as m LEFT JOIN offre as o ON o.marche = m.marche_id) LEFT JOIN users as u ON u.user_id = o.acheteur WHERE m.marche_id = ? GROUP BY m.marche_id,m.inverse,m.question,o.valeur,o.offre_date,u.user_name ORDER BY o.valeur ASC;");
 			pst.setInt(1,idMarche);
 			ResultSet rs = pst.executeQuery();
@@ -50,12 +50,22 @@ public class ManagerMarket{
     			Market market = new Market();
     			market.setQuestion(rs.getString(1));
                 market.setMarcheId(rs.getInt(7));
+                market.setInverse(rs.getInt(6));
     			marches.add(market);
     			idMarche = rs.getInt(6);
-    			market.getOffres().add(setOffres(rs));
+                acheteur = rs.getString(2);
+                quantite = rs.getInt(3);
+                valeur = rs.getInt(4);
+                offreDate = rs.getString(5);
+    			market.getOffres().add(setOffres(acheteur, offreDate, quantite,valeur));
 
     			while(rs.next()){
-    				market.getOffres().add(setOffres(rs));
+                    idMarche = rs.getInt(6);
+                    acheteur = rs.getString(2);
+                    quantite = rs.getInt(3);
+                    valeur = rs.getInt(4);
+                    offreDate = rs.getString(5);
+                    market.getOffres().add(setOffres(acheteur, offreDate, quantite,valeur));
     			}
         }
 		}finally{
@@ -63,30 +73,86 @@ public class ManagerMarket{
 		}
     }
 
-    private Offre setOffres(ResultSet rs) throws SQLException{
+    public void focusMarket() throws SQLException, NamingException {
+        focusMarket(idMarche);
+    }
+
+    public void getMarket(int id) throws SQLException, NamingException {
+        idMarche = id;
+        Connection con = null;
+        int qute,val;
+        try{
+            con = ConnectionMarket.getConnection();
+            /* la requête qui va bien
+            * 
+            */
+            /* cette requête est plus faite pour afficher le détail dans la rubrique historique ou détail */
+            PreparedStatement pst = con.prepareStatement("SELECT m.question,count(valeur) as quantite,o.valeur,m.inverse,m.marche_id FROM marche as m LEFT JOIN offre as o ON o.marche = m.marche_id WHERE m.marche_id = ? GROUP BY m.inverse,m.question,o.valeur,m.marche_id ORDER BY o.valeur ASC;");
+            pst.setInt(1,idMarche);
+            ResultSet rs = pst.executeQuery();
+
+            if(rs.next()){
+                Market market = new Market();
+                market.setQuestion(rs.getString(1));
+                market.setMarcheId(rs.getInt(5));
+                market.setInverse(rs.getInt(4));
+                marches.add(market);
+                idMarche = market.getInverse();
+                qute = rs.getInt(2);
+                val  = rs.getInt(3);
+                market.getOffres().add(setOffres(qute,val));
+
+                while(rs.next()){
+                    qute = rs.getInt(2);
+                    val  = rs.getInt(3);
+                    market.getOffres().add(setOffres(qute,val));
+                }
+        }
+        }finally{
+            con.close();
+        }
+    }
+
+    private Offre setOffres(String acheteur, String offreDate, int quantite, int valeur){
     	Offre result = new Offre();
-    	String[] jour,heure,tmp;
-    	Calendar cal = Calendar.getInstance();
-    	result.setAcheteur(rs.getString(2));
-    	result.setQuantite(rs.getInt(3));
-    	result.setValeur(rs.getInt(4));
+
+    	result.setAcheteur(acheteur);
+    	result.setQuantite(quantite);
+    	result.setValeur(valeur);
         //result.setOffreDate(rs.getString(5));
         // if(rs.getString(5).matches("\.")){
              // tmp = rs.getString(5).split(Pattern.quote("."),2);
              // tmp = tmp[0].split(" ");
         // }
         // else
-           tmp = rs.getString(5).split(" ");
-        if(tmp.length > 0){
-    		jour = tmp[0].split("/",3);
-    		heure = tmp[1].split(":",3);
-    		cal.set(Integer.parseInt(jour[2]),Integer.parseInt(jour[1]),Integer.parseInt(jour[0]),Integer.parseInt(heure[0]),Integer.parseInt(heure[1]),Integer.parseInt(heure[2]));
-    		result.setOffreDate(cal);
-    	}
-
-
+        result.setOffreDate(getDateCalendar(offreDate));
+  
 		return result;
 
+    }
+
+     private Offre setOffres(int quantite, int valeur){
+        Offre result = new Offre();
+
+        result.setQuantite(quantite);
+        result.setValeur(valeur);
+  
+        return result;
+
+    }
+
+    private Calendar getDateCalendar(String date){
+        String[] tmp,heure,jour;
+        Calendar cal = null;
+        tmp = date.split(" ");
+        if(tmp.length > 0){
+            cal = Calendar.getInstance();
+            jour = tmp[0].split("/",3);
+            heure = tmp[1].split(":",3);
+            cal.set(Integer.parseInt(jour[2]),Integer.parseInt(jour[1]),Integer.parseInt(jour[0]),Integer.parseInt(heure[0]),Integer.parseInt(heure[1]),Integer.parseInt(heure[2]));
+            return cal;
+        }
+        return cal;
     }
 
     public void getMarket() throws SQLException, NamingException{
@@ -133,7 +199,7 @@ public class ManagerMarket{
             ResultSet rs = pst.executeQuery();
             ret = "<ul>";
             while(rs.next()){
-                ret += "<a href='index.jsp?market=";
+                ret += "<a href='marche.jsp?market=";
                 ret += rs.getString(1);
                 ret += "'><li>";
                 ret += rs.getString(2);
