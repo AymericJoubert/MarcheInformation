@@ -10,18 +10,28 @@ import mapping.Trader;
 
 @WebServlet("OffreManager")
 public class OffreManager extends HttpServlet{
+
+	private Int qute,idMarket,price;
+	private Trader seller;
+
+	public void init() throws ServletException {
+		super.init();
+		qute = -1;
+		idMarket = -1;
+		price = -1;
+		seller = null;
+	}
 	
 	public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException{
 		// récupérer la nouvelle offre d'achat : quantité, prix, acheteur
 		String nomSeller;
-		int qute,idMarket,price;
 
 		// Penser au XSS
 		qute = Integer.parseInt(req.getParameter("quantite"));
 		price = Integer.parseInt(req.getParameter("prix"));
 		idMarket = Integer.parseInt(req.getParameter("market"));
 		nomSeller = req.getRemoteUser();
-		Trader seller = new Trader(nomSeller);
+		seller = new Trader(nomSeller);
 
 		Connection con = null;
 		try{

@@ -16,7 +16,7 @@ public class ManagerMarket{
 	// id d'un des carnets de commmande
     private int idMarche;
     // les deux carnets sysmetriques
-    private ArrayList<Market> marches;
+    private ArrayList<Market> marches; 
 
 
     public ManagerMarket(){
@@ -38,7 +38,11 @@ public class ManagerMarket{
     	Connection con = null;
     	try{
 	    	con = ConnectionMarket.getConnection();
-			PreparedStatement pst = con.prepareStatement("SELECT m.question,u.user_name,o.quantite,o.valeur,o.offre_date,m.inverse,m.marche_id FROM (marche as m LEFT JOIN offre as o ON o.marche = m.marche_id) LEFT JOIN users as u ON u.user_id = o.acheteur WHERE m.marche_id = ?;");
+            /* la requête qui va bien
+            * SELECT m.question,count(valeur) as quantite,o.valeur,m.inverse FROM marche as m LEFT JOIN offre as o ON o.marche = m.marche_id WHERE m.marche_id = 1 GROUP BY m.inverse,m.question,o.valeur ORDER BY o.valeur ASC;
+            */
+            /* cette requête est plus faite pour afficher le détail dans la rubrique historique ou détail */
+			PreparedStatement pst = con.prepareStatement("SELECT m.question,u.user_name,count(valeur) as quantite,o.valeur,to_char(o.offre_date,'DD/MM/YYYY HH24:MI:SS') as date,m.inverse,m.marche_id FROM (marche as m LEFT JOIN offre as o ON o.marche = m.marche_id) LEFT JOIN users as u ON u.user_id = o.acheteur WHERE m.marche_id = ? GROUP BY m.marche_id,m.inverse,m.question,o.valeur,o.offre_date,u.user_name ORDER BY o.valeur ASC;");
 			pst.setInt(1,idMarche);
 			ResultSet rs = pst.executeQuery();
 
@@ -66,16 +70,17 @@ public class ManagerMarket{
     	result.setAcheteur(rs.getString(2));
     	result.setQuantite(rs.getInt(3));
     	result.setValeur(rs.getInt(4));
+        //result.setOffreDate(rs.getString(5));
         // if(rs.getString(5).matches("\.")){
-             tmp = rs.getString(5).split(Pattern.quote("."),2);
-             tmp = tmp[0].split(" ");
+             // tmp = rs.getString(5).split(Pattern.quote("."),2);
+             // tmp = tmp[0].split(" ");
         // }
         // else
-        //    tmp = rs.getString(5).split(" ");
+           tmp = rs.getString(5).split(" ");
         if(tmp.length > 0){
-    		jour = tmp[0].split("-",3);
+    		jour = tmp[0].split("/",3);
     		heure = tmp[1].split(":",3);
-    		cal.set(Integer.parseInt(jour[0]),Integer.parseInt(jour[1]),Integer.parseInt(jour[2]),Integer.parseInt(heure[0]),Integer.parseInt(heure[1]),Integer.parseInt(heure[2]));
+    		cal.set(Integer.parseInt(jour[2]),Integer.parseInt(jour[1]),Integer.parseInt(jour[0]),Integer.parseInt(heure[0]),Integer.parseInt(heure[1]),Integer.parseInt(heure[2]));
     		result.setOffreDate(cal);
     	}
 

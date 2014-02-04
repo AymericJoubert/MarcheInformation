@@ -68,7 +68,6 @@ CREATE TABLE marche(
 CREATE TABLE offre(
   offre_id serial,
   valeur int,
-  quantite int,
   marche int,
   acheteur int,
   acheteur_inverse int,
@@ -105,13 +104,14 @@ UPDATE marche SET inverse = 4 WHERE marche_id = 3;
 
 --les offre d'un marché
 
-insert into offre (valeur,quantite,marche,acheteur) values (40, 10, 1, 1);
-insert into offre (valeur,quantite,marche,acheteur) values (38, 7, 2,2);
+insert into offre (valeur,marche,acheteur values (40,1, 1);
+insert into offre (valeur,marche,acheteur) values (38, 2,2);
 
 -- les offre le l'autre marché
 
-insert into offre (valeur,quantite,marche,acheteur) values (38, 12, 4,1);
-insert into offre (valeur,quantite,marche,acheteur) values (47, 2, 3,2);
+insert into offre (valeur,marche,acheteur) values (38,4,1);
+insert into offre (valeur,marche,acheteur) values (47,3,2);
+insert into offre(valeur,marche,acheteur,offre_date) values (40,1,2,'2014-01-30 15:38:24');
 
 update offre SET offre_date = '2014-01-05 11:30:45' where offre_id=1;
 update offre SET offre_date = '2013-12-22 10:30:45' where offre_id=4;
