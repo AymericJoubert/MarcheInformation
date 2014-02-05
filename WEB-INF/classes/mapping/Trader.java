@@ -12,6 +12,7 @@ public class Trader {
     private String nom;
     private String prenom;
     private String cash;
+    private String pass;
     private Connection con = null;
 
     public Trader(String user_name){
@@ -22,7 +23,7 @@ public class Trader {
 	    DataSource ds = (DataSource) envCtx.lookup("marche");
 	    con = ds.getConnection();
 
-	    PreparedStatement pst = con.prepareStatement("SELECT user_id, user_name, nom, prenom, cash FROM users WHERE user_name = ?");
+	    PreparedStatement pst = con.prepareStatement("SELECT user_id, user_name, nom, prenom, cash, user_pass FROM users WHERE user_name = ?");
 	    pst.setString(1, user_name);
 	    ResultSet rs = pst.executeQuery();
 	    rs.next();
@@ -31,6 +32,7 @@ public class Trader {
 	    nom = rs.getString(3);
 	    prenom = rs.getString(4);
 	    cash = rs.getString(5);
+	    pass = rs.getString(6);
 
 	}
 	catch(Exception e){
@@ -53,5 +55,17 @@ public class Trader {
     public String getCash(){
 	return cash;
     }
+    
+    public String getNom(){
+		return nom;
+	}
+	
+	public String getPrenom(){
+		return prenom;
+	}
+	
+	public boolean compareMdp(String mdp){
+		return pass.equals(mdp);
+	}
 
 }
