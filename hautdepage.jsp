@@ -60,8 +60,8 @@
 	</div>
 
 	<div id="search">
-	  <form id="cse-search-box" action="http://google.com/cse">  
-	    <input type="text" name="q" size="20" />  
+	  <form id="cse-search-box" action="http://google.com/cse"> 
+	    <input type="text" name="q" size="20" />
 	    <input type="submit" name="sa" value="Rechercher" />
 	  </form>
 	</div>

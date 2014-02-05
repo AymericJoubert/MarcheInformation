@@ -104,7 +104,7 @@ UPDATE marche SET inverse = 4 WHERE marche_id = 3;
 
 --les offre d'un marché
 
-insert into offre (valeur,marche,acheteur values (40,1, 1);
+insert into offre (valeur,marche,acheteur) values (40,1, 1);
 insert into offre (valeur,marche,acheteur) values (38, 2,2);
 
 -- les offre le l'autre marché

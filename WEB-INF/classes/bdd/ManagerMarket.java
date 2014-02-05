@@ -69,7 +69,8 @@ public class ManagerMarket{
     			}
         }
 		}finally{
-			con.close();
+            if(con != null)
+			    con.close();
 		}
     }
 
@@ -109,7 +110,8 @@ public class ManagerMarket{
                 }
         }
         }finally{
-            con.close();
+            if(con != null)
+                con.close();
         }
     }
 
@@ -182,7 +184,9 @@ public class ManagerMarket{
 			}
 			ret+="</ul>";
 		}finally{
-			con.close();
+            if(con.close() != null){
+    			con.close();
+            }
 		}
 		return ret;
     }
