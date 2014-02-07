@@ -52,6 +52,14 @@ public class Trader {
 	return user_id;
     }
 
+    public void reloadCash() throws SQLException{
+    	PreparedStatement pst = con.prepareStatement("SELECT cash FROM users WHERE user_name = ?");
+    	pst.setString(1,user_name);
+    	ResultSet rs = pst.executeQuery();
+    	if(rs.next())
+    		cash = rs.getString(1);
+    }
+
     public String getCash(){
 	return cash;
     }

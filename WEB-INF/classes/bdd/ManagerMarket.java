@@ -184,7 +184,7 @@ public class ManagerMarket{
 			}
 			ret+="</ul>";
 		}finally{
-            if(con.close() != null){
+            if(con != null){
     			con.close();
             }
 		}

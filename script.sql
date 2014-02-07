@@ -56,9 +56,9 @@ CREATE TABLE marche(
   ouverture timestamp NOT NULL,
   fermeture timestamp NOT NULL,
   inverse int,
-  reussite int,
+  reussite boolean,
   CONSTRAINT pk_marche_id PRIMARY KEY (marche_id),
-  CONSTRAINT fk_createur FOREIGN KEY (createur) REFERENCES trader (trader_id),
+  CONSTRAINT fk_createur FOREIGN KEY (createur) REFERENCES users (user_id),
   CONSTRAINT fk_inverse FOREIGN KEY (inverse) REFERENCES marche (marche_id)
 );
 
@@ -76,8 +76,8 @@ CREATE TABLE offre(
   achat boolean NOT NULL DEFAULT true,
   CONSTRAINT pk_offre_id PRIMARY KEY (offre_id),
   CONSTRAINT fk_marche FOREIGN KEY (marche) REFERENCES marche (marche_id),
-  CONSTRAINT fk_acheteur FOREIGN KEY (acheteur) REFERENCES trader (trader_id),
-  CONSTRAINT fk_acheteur_inverse FOREIGN KEY (acheteur_inverse) REFERENCES trader (trader_id)
+  CONSTRAINT fk_acheteur FOREIGN KEY (acheteur) REFERENCES users (user_id),
+  CONSTRAINT fk_acheteur_inverse FOREIGN KEY (acheteur_inverse) REFERENCES users (user_id)
 );
 
 --
