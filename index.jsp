@@ -11,7 +11,7 @@
       }
     	// recupere le premier carnet
     	Market marche = marches.getMarches().get(0);
-    	ArrayList<Offre> offres = marche.getVentes();
+    	ArrayList<Offre> offres = marche.getOffres();
 
         //out.println("offre taille"+offres.size()+ "offre empty :"+offres.isEmpty());
     	%>
@@ -37,7 +37,7 @@
       <% } %>
     </table>
 <HR>
-      <% offres = marche.getOffres();
+      <% offres = marche.getVentes();
         //out.println("offre taille"+offres.size()+ "offre empty :"+offres.isEmpty());
         if(!offres.isEmpty()){%>
         <table id="market_table">

@@ -130,7 +130,7 @@ public class ManagerMarket{
             * 
             */
             /* cette requête est plus faite pour afficher le détail dans la rubrique historique ou détail */
-            PreparedStatement pst = con.prepareStatement("SELECT m.question,count(valeur) as quantite,o.valeur, o.achat, m.inverse FROM marche as m LEFT JOIN offre as o ON o.marche = m.marche_id WHERE m.marche_id = ? GROUP BY m.inverse,m.question,o.valeur,m.marche_id,o.achat ORDER BY o.valeur,o.achat ASC;");
+            PreparedStatement pst = con.prepareStatement("SELECT m.question,count(valeur) as quantite,o.valeur, o.achat, m.inverse FROM marche as m LEFT JOIN offre as o ON o.marche = m.marche_id WHERE m.marche_id = ? AND o.acheteur_inverse is null GROUP BY m.inverse,m.question,o.valeur,m.marche_id,o.achat,o.acheteur_inverse ORDER BY o.valeur,o.achat ASC;");
             pst.setInt(1,idMarche);
             ResultSet rs = pst.executeQuery();
 
