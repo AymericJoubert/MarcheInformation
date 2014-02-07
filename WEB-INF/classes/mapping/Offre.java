@@ -8,6 +8,7 @@ public class Offre{
     private int offreId, valeur, quantite, marche;
     private String acheteur,acheteurInverse;
     private Calendar offreDate;
+    private boolean achat;
 
     public Offre(){
         offreId = 0;
@@ -17,6 +18,15 @@ public class Offre{
         acheteur = null;
         acheteurInverse = null;
         offreDate = null;
+        achat = true;
+    }
+
+    public void setAchat(boolean achat){
+        this.achat = achat;
+    }
+
+    public boolean getAchat(){
+        return achat;
     }
 
     public int getOffreId(){
