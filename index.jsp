@@ -54,8 +54,8 @@
   <% } %>
 	<%  if(request.getRemoteUser()!=null) {%> 
             <form method='post' action='OffreManager'>
-              <td><input type="text" name="quantite"/></td>
-              <td><input type="text" name="prix"/></td>
+              <td><label for="qute">quantite : </label><input id="qute" type="text" name="quantite"/></td>
+              <td><label for="prix">prix :</label><input  id="prix" type="text" name="prix"/></td>
               <td><input type="submit" value="Achetez !"/></td>
               <input type="hidden" name="market" value="<%= marche.getMarcheId() %>"/>
             </form>
