@@ -40,7 +40,7 @@ public class Admin extends HttpServlet
 				out.println("<td>");
 				out.println("<form name='end' method='post'>");
 				out.println("<input type='hidden' name="+rs.getString(1)+"/>");
-				out.println("<input type='submit' value='Terminer'");
+				out.println("<input type='submit' value='Fermer'");
 				out.println("</form>");
 				out.println("</td>");
 				out.println("<tr>");				
@@ -51,7 +51,7 @@ public class Admin extends HttpServlet
 			out.println("Createur  : <input type='text' name='createur' /><br/><br/>");
 			out.println("Question  : <input type='text' name='question' /><br/><br/>");
 			out.println("Inverse   : <input type='text' name='inverse' /><br/><br/>");			
-			out.println("Fermeture : <input type='timestamp' name='fermeture' /><br/><br/>");
+			out.println("Fermeture : <input type='datetime-local' name='fermeture' /><br/><br/>");
 			out.println("<input type='submit' value='Creer'/>");
 			out.println("</form>");
 			out.println("</section");
@@ -84,13 +84,14 @@ public class Admin extends HttpServlet
 				question  = req.getParameter("question");
 				inverse   = req.getParameter("inverse");
 				fermeture = req.getParameter("fermeture");
-				PreparedStatement pst  = con.prepareStatement("insert into marche (createur,question,ouverture,fermeture) values (?, ?, localtimestamp, localtimestamp)");
+				PreparedStatement pst  = con.prepareStatement("insert into marche (createur,question,ouverture,fermeture) values (?, ?, localtimestamp, ? )");
 				PreparedStatement pst2 = con.prepareStatement("select marche_id from marche where createur = ? and question = ? ");
-				PreparedStatement pst3 = con.prepareStatement("insert into marche (createur,question,ouverture,fermeture, inverse) values (?, ? , localtimestamp, localtimestamp, ?)");
+				PreparedStatement pst3 = con.prepareStatement("insert into marche (createur,question,ouverture,fermeture, inverse) values (?, ? , localtimestamp, ?, ? )");
 				PreparedStatement pst4 = con.prepareStatement("select marche_id from marche where createur = ? and question = ? ");
 				PreparedStatement pst5 = con.prepareStatement("update  marche set inverse = ? where marche_id = (select marche_id from marche where createur = ? and question = ? LIMIT 1)");
 				pst.setInt(1, createur);
 				pst.setString(2, question);
+				pst.setString(3, fermeture);
 				pst2.setInt(1, createur);
 				pst2.setString(2, question);
 				pst.executeUpdate();
@@ -99,7 +100,8 @@ public class Admin extends HttpServlet
 				id = Integer.parseInt(rs.getString(1));
 				pst3.setInt(1, createur);
 				pst3.setString(2, inverse);
-				pst3.setInt(3, id);
+				pst3.setString(3, fermeture);
+				pst3.setInt(4, id);
 				pst3.executeUpdate();
 				pst4.setInt(1, createur);
 				pst4.setString(2, inverse);

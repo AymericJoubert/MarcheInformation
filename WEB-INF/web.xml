@@ -102,6 +102,14 @@ PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
     </web-resource-collection>
     <auth-constraint>
       <role-name>role1</role-name>
+      <role-name>role2</role-name>
+    </auth-constraint>
+    <web-resource-collection>
+      <web-resource-name>Administrateur3</web-resource-name>
+      <url-pattern>/admin</url-pattern>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>role2</role-name>
     </auth-constraint>
   </security-constraint>
 

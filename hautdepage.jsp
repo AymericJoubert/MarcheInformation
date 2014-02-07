@@ -13,7 +13,7 @@
    }
 %>
   </head>
-  <body>
+  <body > <!--onLoad="window.setTimeout('history.go(0)', 30000)">-->
     <header>
       <div id="haut">
 	<div id="logo">

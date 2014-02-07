@@ -86,7 +86,7 @@ CREATE TABLE offre(
 
 insert into users (user_name, user_pass, nom,prenom,cash) values ('blondeah', 'fifou', 'pirex','paul',10000);
 insert into users (user_name, user_pass, nom,prenom,cash) values ('aymeric', 'fifou', 'bouicx','pierre',10000);
-insert into user_roles values ('aymeric','role1');
+insert into user_roles values ('aymeric','role2');
 insert into user_roles values ('blondeah','role1');
 
 --insert into marche (createur,question,ouverture,fermeture) values (,,CURRENT_DATE,);
