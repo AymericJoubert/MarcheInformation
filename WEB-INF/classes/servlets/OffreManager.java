@@ -4,6 +4,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.sql.*;
 import java.sql.*;
 import java.util.Date;
+import java.io.*;
 
 import bdd.*;
 import mapping.Trader;
@@ -31,9 +32,10 @@ public class OffreManager extends HttpServlet{
 		idMarket = Integer.parseInt(req.getParameter("market"));
 		nomSeller = req.getRemoteUser();
 		seller = new Trader(nomSeller);
-
 		Connection con = null;
+PrintWriter		out = null;
 		try{
+ out = res.getWriter();
 			con = ConnectionMarket.getConnection();
 			PreparedStatement pst = null;
 			ResultSet rs = null;
@@ -52,20 +54,26 @@ public class OffreManager extends HttpServlet{
 					rs = pst.executeQuery();
 					
 					if(rs.next())
-						match(idMarket, price, seller, rs, con, pst);
-					else{						
-						notMatch(qute, price, idMarket, rs.getInt(3), seller, con, pst);
+						match(price, rs, con, pst);
+					else{
+						pst = con.prepareStatement("SELECT inverse FROM marche where marche_id = ?");
+						pst.setInt(1,idMarket);
+						rs = pst.executeQuery();
+						rs.next();
+						notMatch(rs.getInt(1), con, pst);
 					}
 					seller.reloadCash();
 				}
 		}
 		req.setAttribute("market",idMarket);
 		res.sendRedirect("index.jsp");
-		}catch(Exception e){}
+		}catch(Exception e){
+			out.println(e.getMessage());
+		}
 		finally{
 			try{
 				con.close();
-			}catch(SQLException sqle1){
+			}catch(Exception sqle1){
 				try{
 					res.sendRedirect("erreur.jsp");
 				}
@@ -74,17 +82,13 @@ public class OffreManager extends HttpServlet{
 		}
 	}
 
-	public void notMatch(int qute, int price, int idMarket, int marcheInverse, Trader seller, Connection con, PreparedStatement pst) throws SQLException {
-
-		for(int i = 0; i < qute; i++){
-			pst = con.prepareStatement("INSERT INTO offre(valeur,marche,acheteur,offre_date,achat) VALUES(?,?,?,?,false)");
-			pst.setInt(1,100 - price);
-			pst.setInt(2,marcheInverse);
-			pst.setInt(3,Integer.parseInt(seller.getUserId()));
-			pst.setTimestamp(4,new Timestamp(new Date().getTime()));
-			pst.executeUpdate();
-		}
-
+	public void notMatch(int marcheInverse, Connection con, PreparedStatement pst) throws SQLException {
+		pst = con.prepareStatement("INSERT INTO offre(valeur,marche,acheteur,offre_date,achat) VALUES(?,?,?,?,false)");
+		pst.setInt(1,100 - price);
+		pst.setInt(2,marcheInverse);
+		pst.setInt(3,Integer.parseInt(seller.getUserId()));
+		pst.setTimestamp(4,new Timestamp(new Date().getTime()));
+		pst.executeUpdate();
 	}
 
 	public void manageCash(Connection con, int idUser, int cashToRemove) throws SQLException{
@@ -94,8 +98,8 @@ public class OffreManager extends HttpServlet{
 		pst.executeUpdate();
 	}
 
-	public void match(int idMarket, int initPrice, Trader seller, ResultSet rs, Connection con, PreparedStatement pst) throws SQLException {
-			int offre, vendeur, marcheInverse, inversePrice;
+	public void match(int initPrice, ResultSet rs, Connection con, PreparedStatement pst) throws SQLException {
+			int offre, vendeur, marcheInverse, inversePrice, price;
 			offre = rs.getInt(1);
 			vendeur = rs.getInt(2);
 			marcheInverse = rs.getInt(3);
@@ -103,7 +107,7 @@ public class OffreManager extends HttpServlet{
 			//prix reel paye
 			inversePrice = 100 - price;
 			// on achete la vente qui match
-			pst = con.prepareStatement("UPDATE offre SET acheteur_inverse = ?, valeur = ? WHERE offre_id = (SELECT offre_id FROM offre WHERE valeur = ? AND acheteur = ? AND marche = ? LIMIT 1)");
+			pst = con.prepareStatement("UPDATE offre SET acheteur_inverse = ?, valeur = ? WHERE offre_id = (SELECT offre_id FROM offre WHERE valeur = ? AND acheteur = ? AND marche = ? AND achat = true LIMIT 1)");
 			pst.setInt(1,Integer.parseInt(seller.getUserId()));
 			pst.setInt(2,price);
 			pst.setInt(3,inversePrice);
@@ -112,7 +116,7 @@ public class OffreManager extends HttpServlet{
 			pst.executeUpdate();
 			manageCash(con, Integer.parseInt(seller.getUserId()), price);
 			// on fait la meme chose sur le marche inverse, pour le vendeur de l'offre precedente
-			pst = con.prepareStatement("UPDATE offre SET acheteur_inverse = ?, valeur = ? WHERE offre_id = (SELECT offre_id FROM offre WHERE valeur = ? AND acheteur = ? AND marche = ? ORDER BY offre_date LIMIT 1)");
+			pst = con.prepareStatement("UPDATE offre SET acheteur_inverse = ?, valeur = ? WHERE offre_id = (SELECT offre_id FROM offre WHERE valeur = ? AND acheteur = ? AND marche = ? AND achat = true ORDER BY offre_date LIMIT 1)");
 			pst.setInt(1,vendeur);
 			pst.setInt(2,inversePrice);
 			pst.setInt(3,initPrice);
@@ -121,9 +125,8 @@ public class OffreManager extends HttpServlet{
 			pst.executeUpdate();
 			manageCash(con, vendeur, inversePrice);
 			// supprime l'offre de vente qui a matche
-			pst = con.prepareStatement("DELETE FROM offre WHERE marche = ? AND acheteur = ? AND achat = false");
-			pst.setInt(1,idMarket);
-			pst.setInt(2,vendeur);
+			pst = con.prepareStatement("DELETE FROM offre WHERE offre_id = ?");
+			pst.setInt(1,offre);
 			pst.executeUpdate();
 	}
 }
