@@ -61,7 +61,7 @@
             </form>
         <% } %>
         
-      <img src="./images/fleche.gif" alt="image marché inverse"/><a href="index.jsp?market=<%= marche.getMarcheId()%>">Accédez au marché inverse !</a>
+      <img src="./images/fleche.gif" alt="image marché inverse"/><a href="index.jsp?market=<%= marche.getInverse()%>">Accédez au marché inverse !</a>
     </section>
 </div>    
 <footer>

@@ -4,13 +4,15 @@
     <% ManagerMarket marches = new ManagerMarket();
     	// le premier carnet
       if(request.getParameter("market") != null){
-    	int idMarche = Integer.parseInt(request.getParameter("market"));
+    	  int idMarche = Integer.parseInt(request.getParameter("market"));
+        try{
         marches.focusMarket(idMarche);
+        }catch(Exception e){}
       }else{
     		marches.focusMarket();
       }
     	// recupere le premier carnet
-    	Market marche = marches.getMarches().get(0);
+    	Market marche = marches.getLeMarche();
     	ArrayList<Offre> offres = marche.getOffres();
     	%>
 
@@ -23,7 +25,7 @@
       		<th>Nom</th><th>Quantité</th><th>Prix</th><th>Date</th>
       	</tr>
      	<%for(Offre o : offres){
-     		if(o.getAcheteurInverse() == null){%>
+     		if(o != null){%>
      		<tr>
      			<td><%= o.getAcheteur() %></td><td><%= o.getQuantite() %></td><td> <%= o.getValeur() %></td><td><%= o.toStringDate() %></td>
      		</tr>

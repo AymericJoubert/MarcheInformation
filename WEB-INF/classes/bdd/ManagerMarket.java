@@ -9,7 +9,6 @@ import java.text.SimpleDateFormat;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.regex.Pattern;
-
 import mapping.*;
 
 public class ManagerMarket{
@@ -40,7 +39,6 @@ public class ManagerMarket{
     	Connection con = null;
         int valeur,quantite;
         String acheteur, offreDate;
-
     	try{
 	    	con = ConnectionMarket.getConnection();
             
@@ -49,17 +47,16 @@ public class ManagerMarket{
 			ResultSet rs = pst.executeQuery();
 
 			if(rs.next()){
-    			Market market = new Market();
-    			market.setQuestion(rs.getString(1));
-                market.setMarcheId(rs.getInt(7));
-                market.setInverse(rs.getInt(6));
-    			marches.add(market);
+    			marche.setQuestion(rs.getString(1));
+                marche.setMarcheId(rs.getInt(7));
+                marche.setInverse(rs.getInt(6));
+    			marches.add(marche);
     			idMarche = rs.getInt(6);
                 acheteur = rs.getString(2);
                 quantite = rs.getInt(3);
                 valeur = rs.getInt(4);
                 offreDate = rs.getString(5);
-    			market.getOffres().add(setOffres(acheteur, offreDate, quantite,valeur));
+    			marche.getOffres().add(setOffres(acheteur, offreDate, quantite,valeur));
 
     			while(rs.next()){
                     idMarche = rs.getInt(6);
@@ -67,13 +64,17 @@ public class ManagerMarket{
                     quantite = rs.getInt(3);
                     valeur = rs.getInt(4);
                     offreDate = rs.getString(5);
-                    market.getOffres().add(setOffres(acheteur, offreDate, quantite,valeur));
+                    marche.getOffres().add(setOffres(acheteur, offreDate, quantite,valeur));
     			}
-        }
+            }
 		}finally{
             if(con != null)
 			    con.close();
 		}
+    }
+
+    public Market getLeMarche(){
+        return marche;
     }
 
     public void focusMarket() throws SQLException, NamingException {
@@ -129,13 +130,14 @@ public class ManagerMarket{
             * 
             */
             /* cette requête est plus faite pour afficher le détail dans la rubrique historique ou détail */
-            PreparedStatement pst = con.prepareStatement("SELECT m.question,count(valeur) as quantite,o.valeur, o.achat FROM marche as m LEFT JOIN offre as o ON o.marche = m.marche_id WHERE m.marche_id = ? GROUP BY m.inverse,m.question,o.valeur,m.marche_id,o.achat ORDER BY o.valeur,o.achat ASC;");
+            PreparedStatement pst = con.prepareStatement("SELECT m.question,count(valeur) as quantite,o.valeur, o.achat, m.inverse FROM marche as m LEFT JOIN offre as o ON o.marche = m.marche_id WHERE m.marche_id = ? GROUP BY m.inverse,m.question,o.valeur,m.marche_id,o.achat ORDER BY o.valeur,o.achat ASC;");
             pst.setInt(1,idMarche);
             ResultSet rs = pst.executeQuery();
 
             if(rs.next()){
                 marche.setQuestion(rs.getString(1));
                 marche.setMarcheId(idMarche);
+                marche.setInverse(rs.getInt(5));
                 qute = rs.getInt(2);
                 val  = rs.getInt(3);
                 achat = rs.getBoolean(4);
@@ -162,6 +164,7 @@ public class ManagerMarket{
     	result.setAcheteur(acheteur);
     	result.setQuantite(quantite);
     	result.setValeur(valeur);
+        //result.setOffreDate(offreDate);
         //result.setOffreDate(rs.getString(5));
         // if(rs.getString(5).matches("\.")){
              // tmp = rs.getString(5).split(Pattern.quote("."),2);
