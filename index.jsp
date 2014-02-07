@@ -11,44 +11,47 @@
       }
     	// recupere le premier carnet
     	Market marche = marches.getMarches().get(0);
-    	ArrayList<Offre> offres = marche.getOffres();
+    	ArrayList<Offre> offres = marche.getVentes();
+
+        //out.println("offre taille"+offres.size()+ "offre empty :"+offres.isEmpty());
     	%>
 
     <section id="marche">
       <h1>Marché</h1>
       <h2><%= marche.getQuestion() %></h2>
-      <% if(!offres.isEmpty()){%>
       <table id="market_table">
       	<tr>
       		<th>Quantité</th><th>Prix</th>
-      	</tr>    
-          
-        </tr>
-     	<%for(Offre o : offres){
-     		if(o.getAcheteurInverse() == null){%>
-     		<tr>
-     			<td><%= o.getQuantite() %></td><td> <%= o.getValeur() %></td>
-     		</tr>
-     	<% }
-     	} %>
-     </table>
- <% } %>
+      	</tr>
+      <% if(!offres.isEmpty() ){%>
+      <tr><td colspan="2">offre d'achat du march&eacute;</td></tr>
+       	<%for(Offre o : offres){
+       		if(o.getAcheteurInverse() == null && o.getValeur() > 0 && o.getValeur() < 100){%>
+       		<tr>
+       			<td><%= o.getQuantite() %></td><td> <%= o.getValeur() %></td>
+       		</tr>
+       	<% } %>
+       <%	} %>
+      <% }else{%>
+        <tr><td colspan="2">Pas encore d'offre d'achat</td></tr>
+      <% } %>
+    </table>
 <HR>
- 	<% // recupere le premier carnet
-    	marche = marches.getMarches().get(1);
-    	offres = marche.getOffres();
-    	%>
-      <% if(!offres.isEmpty()){%>
+      <% offres = marche.getOffres();
+        //out.println("offre taille"+offres.size()+ "offre empty :"+offres.isEmpty());
+        if(!offres.isEmpty()){%>
         <table id="market_table">
+          <tr><td colspan="2">offre de vente du march&eacute;</td></tr>
          	<%for(Offre o : offres){
-         		if(o.getAcheteurInverse() == null){%>
+         		if(o.getAcheteurInverse() == null && o.getValeur() > 0 && o.getValeur() < 100){%>
          		<tr>
               <td><%= o.getQuantite() %></td><td> <%= o.getValeur() %></td>
          	  <%}%>
          	<%}%>
        </table>
-     <% } %>
-
+     <% } else { %>
+        <table><tr><td>Pas encore d'offre de vente</td></tr></table>
+  <% } %>
 	<%  if(request.getRemoteUser()!=null) {%> 
             <form method='post' action='OffreManager'>
               <td><input type="text" name="quantite"/></td>

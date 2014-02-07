@@ -16,12 +16,15 @@ public class ManagerMarket{
 	// id d'un des carnets de commmande
     private int idMarche;
     // les deux carnets sysmetriques
-    private ArrayList<Market> marches; 
+    private ArrayList<Market> marches;
+    private Market marche;
+
 
 
     public ManagerMarket(){
     	idMarche = 1;
-		marches = new ArrayList<Market>();
+		marche = new Market();
+        marches = new ArrayList<Market>();
     }
 
     public void getSymetriquesMarkets() throws SQLException, NamingException {
@@ -30,7 +33,6 @@ public class ManagerMarket{
 
     public void getSymetriquesMarkets(int id) throws SQLException, NamingException {
     	getMarket(id);
-    	getMarket();
     }
 
     public void focusMarket(int id) throws SQLException, NamingException {
@@ -78,37 +80,76 @@ public class ManagerMarket{
         focusMarket(idMarche);
     }
 
+// Marche avant
+    // public void getMarket(int id) throws SQLException, NamingException {
+    //     idMarche = id;
+    //     Connection con = null;
+    //     int qute,val;
+    //     try{
+    //         con = ConnectionMarket.getConnection();
+    //         /* la requête qui va bien
+    //         * 
+    //         */
+    //         /* cette requête est plus faite pour afficher le détail dans la rubrique historique ou détail */
+    //         PreparedStatement pst = con.prepareStatement("SELECT m.question,count(valeur) as quantite,o.valeur,m.inverse,m.marche_id FROM marche as m LEFT JOIN offre as o ON o.marche = m.marche_id WHERE m.marche_id = ? GROUP BY m.inverse,m.question,o.valeur,m.marche_id ORDER BY o.valeur ASC;");
+    //         pst.setInt(1,idMarche);
+    //         ResultSet rs = pst.executeQuery();
+
+    //         if(rs.next()){
+    //             Market market = new Market();
+    //             market.setQuestion(rs.getString(1));
+    //             market.setMarcheId(rs.getInt(5));
+    //             market.setInverse(rs.getInt(4));
+    //             marches.add(market);
+    //             idMarche = market.getInverse();
+    //             qute = rs.getInt(2);
+    //             val  = rs.getInt(3);
+    //             market.getOffres().add(setOffres(qute,val));
+
+    //             while(rs.next()){
+    //                 qute = rs.getInt(2);
+    //                 val  = rs.getInt(3);
+    //                 market.getOffres().add(setOffres(qute,val));
+    //             }
+    //     }
+    //     }finally{
+    //         if(con != null)
+    //             con.close();
+    //     }
+    // }
+
     public void getMarket(int id) throws SQLException, NamingException {
         idMarche = id;
         Connection con = null;
         int qute,val;
+        boolean achat;
         try{
             con = ConnectionMarket.getConnection();
             /* la requête qui va bien
             * 
             */
             /* cette requête est plus faite pour afficher le détail dans la rubrique historique ou détail */
-            PreparedStatement pst = con.prepareStatement("SELECT m.question,count(valeur) as quantite,o.valeur,m.inverse,m.marche_id FROM marche as m LEFT JOIN offre as o ON o.marche = m.marche_id WHERE m.marche_id = ? GROUP BY m.inverse,m.question,o.valeur,m.marche_id ORDER BY o.valeur ASC;");
+            PreparedStatement pst = con.prepareStatement("SELECT m.question,count(valeur) as quantite,o.valeur, o.achat FROM marche as m LEFT JOIN offre as o ON o.marche = m.marche_id WHERE m.marche_id = ? GROUP BY m.inverse,m.question,o.valeur,m.marche_id,o.achat ORDER BY o.valeur,o.achat ASC;");
             pst.setInt(1,idMarche);
             ResultSet rs = pst.executeQuery();
 
             if(rs.next()){
-                Market market = new Market();
-                market.setQuestion(rs.getString(1));
-                market.setMarcheId(rs.getInt(5));
-                market.setInverse(rs.getInt(4));
-                marches.add(market);
-                idMarche = market.getInverse();
+                marche.setQuestion(rs.getString(1));
+                marche.setMarcheId(idMarche);
                 qute = rs.getInt(2);
                 val  = rs.getInt(3);
-                market.getOffres().add(setOffres(qute,val));
-
+                achat = rs.getBoolean(4);
+                // marche.getOffres().add(setOffres(qute,val,achat));
+                setOffres(qute,val,achat);
                 while(rs.next()){
                     qute = rs.getInt(2);
                     val  = rs.getInt(3);
-                    market.getOffres().add(setOffres(qute,val));
+                    achat = rs.getBoolean(4);
+                    // marche.getOffres().add(setOffres(qute,val,achat));
+                    setOffres(qute,val,achat);
                 }
-        }
+                    marches.add(marche);
+            }
         }finally{
             if(con != null)
                 con.close();
@@ -133,12 +174,17 @@ public class ManagerMarket{
 
     }
 
-     private Offre setOffres(int quantite, int valeur){
+     private Offre setOffres(int quantite, int valeur, boolean achat){
         Offre result = new Offre();
 
         result.setQuantite(quantite);
         result.setValeur(valeur);
-  
+        result.setAchat(achat);
+        if(achat){
+            marche.getOffres().add(result); 
+        }else{
+            marche.getVentes().add(result);
+        }
         return result;
 
     }

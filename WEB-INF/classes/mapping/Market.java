@@ -9,7 +9,7 @@ public class Market {
     private int marcheId, createur, inverse;
     private String question;
     private Date ouverture, fermeture;
-    private ArrayList<Offre> offres;
+    private ArrayList<Offre> offres, ventes;
 
     public Market(){
         marcheId = 0;
@@ -19,6 +19,7 @@ public class Market {
         ouverture = null;
         fermeture = null;
         offres = new ArrayList<Offre>();
+        ventes = new ArrayList<Offre>();
     }
 
     public ArrayList<Offre> getOffres(){
@@ -29,6 +30,13 @@ public class Market {
         this.offres = offres;
     }
 
+    public ArrayList<Offre> getVentes(){
+        return ventes;
+    }
+
+    public void setVentes(ArrayList<Offre> ventes){
+        this.ventes = ventes;
+    }
     public int getMarcheId(){
     	return marcheId;
     }
