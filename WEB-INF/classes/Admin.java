@@ -7,6 +7,10 @@ import java.sql.*;
 import javax.sql.*;
 import javax.naming.*;
 import mapping.*;
+import bdd.*;
+import java.util.Calendar;
+import java.util.regex.Pattern;
+
 //
 // ATTENTION CETTE PAGE EST A AJOUTER AU REALM DANS LES PAGES NECESSITANT LE ROLE 1
 //
@@ -91,7 +95,11 @@ public class Admin extends HttpServlet
 				PreparedStatement pst5 = con.prepareStatement("update  marche set inverse = ? where marche_id = (select marche_id from marche where createur = ? and question = ? LIMIT 1)");
 				pst.setInt(1, createur);
 				pst.setString(2, question);
-				pst.setString(3, fermeture);
+				
+				// Transforme la string en date compatible pour postgres
+				Calendar c = getDateCalendar(fermeture);
+				pst.setTimestamp(3, new Timestamp(c.getTime().getTime()));
+				
 				pst2.setInt(1, createur);
 				pst2.setString(2, question);
 				pst.executeUpdate();
@@ -100,7 +108,7 @@ public class Admin extends HttpServlet
 				id = Integer.parseInt(rs.getString(1));
 				pst3.setInt(1, createur);
 				pst3.setString(2, inverse);
-				pst3.setString(3, fermeture);
+				pst3.setTimestamp(3, new Timestamp(c.getTime().getTime()));
 				pst3.setInt(4, id);
 				pst3.executeUpdate();
 				pst4.setInt(1, createur);
@@ -117,10 +125,31 @@ public class Admin extends HttpServlet
 			}
 			catch(Exception e){
 				try{
+					out.println(e.getMessage());
+					out.println(e.toString());
+					out.println(e.getStackTrace());
 					con.close();
-				}catch(Exception ee){}
+				}catch(Exception ee){
+						out.println(ee.getMessage());
+						out.println(ee.toString());
+						out.println(ee.getStackTrace());
+				}
 			}
 		}
 	}
+	
+	public Calendar getDateCalendar(String date){
+		String[] tmp,heure,jour;
+		Calendar cal = null;
+		tmp = date.split(Pattern.quote("T"));
+		if(tmp.length > 0){
+			cal = Calendar.getInstance();
+			jour = tmp[0].split(Pattern.quote("-"));
+			heure = tmp[1].split(Pattern.quote(":"));
+			cal.set(Integer.parseInt(jour[2]),Integer.parseInt(jour[1]),Integer.parseInt(jour[0]),Integer.parseInt(heure[0]),Integer.parseInt(heure[1]),0);
+			return cal;
+		}
+		return cal;
+    }
 
 }

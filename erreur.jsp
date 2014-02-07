@@ -18,7 +18,7 @@
  %>" est survenu.</h3> 
 
 
-<a href=menu.html>Retour</a>
+<a href=index.jsp>Retour</a>
 
 <%@ include file="basDePage.html" %>
 

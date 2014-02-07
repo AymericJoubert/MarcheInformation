@@ -81,44 +81,6 @@ public class ManagerMarket{
         focusMarket(idMarche);
     }
 
-// Marche avant
-    // public void getMarket(int id) throws SQLException, NamingException {
-    //     idMarche = id;
-    //     Connection con = null;
-    //     int qute,val;
-    //     try{
-    //         con = ConnectionMarket.getConnection();
-    //         /* la requête qui va bien
-    //         * 
-    //         */
-    //         /* cette requête est plus faite pour afficher le détail dans la rubrique historique ou détail */
-    //         PreparedStatement pst = con.prepareStatement("SELECT m.question,count(valeur) as quantite,o.valeur,m.inverse,m.marche_id FROM marche as m LEFT JOIN offre as o ON o.marche = m.marche_id WHERE m.marche_id = ? GROUP BY m.inverse,m.question,o.valeur,m.marche_id ORDER BY o.valeur ASC;");
-    //         pst.setInt(1,idMarche);
-    //         ResultSet rs = pst.executeQuery();
-
-    //         if(rs.next()){
-    //             Market market = new Market();
-    //             market.setQuestion(rs.getString(1));
-    //             market.setMarcheId(rs.getInt(5));
-    //             market.setInverse(rs.getInt(4));
-    //             marches.add(market);
-    //             idMarche = market.getInverse();
-    //             qute = rs.getInt(2);
-    //             val  = rs.getInt(3);
-    //             market.getOffres().add(setOffres(qute,val));
-
-    //             while(rs.next()){
-    //                 qute = rs.getInt(2);
-    //                 val  = rs.getInt(3);
-    //                 market.getOffres().add(setOffres(qute,val));
-    //             }
-    //     }
-    //     }finally{
-    //         if(con != null)
-    //             con.close();
-    //     }
-    // }
-
     public void getMarket(int id) throws SQLException, NamingException {
         idMarche = id;
         Connection con = null;
@@ -192,7 +154,7 @@ public class ManagerMarket{
 
     }
 
-    private Calendar getDateCalendar(String date){
+    public Calendar getDateCalendar(String date){
         String[] tmp,heure,jour;
         Calendar cal = null;
         tmp = date.split(" ");
