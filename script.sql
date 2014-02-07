@@ -1,4 +1,4 @@
---
+﻿--
 -- Script de création des tables pour la base de données du projet Lille Information Market
 --
 
@@ -51,11 +51,12 @@ CREATE TABLE users_confirm(
 
 CREATE TABLE marche(
   marche_id serial,
-  createur int,
-  question varchar(255),
-  ouverture timestamp,
-  fermeture timestamp,
+  createur int NOT NULL,
+  question varchar(255) NOT NULL,
+  ouverture timestamp NOT NULL,
+  fermeture timestamp NOT NULL,
   inverse int,
+  reussite int,
   CONSTRAINT pk_marche_id PRIMARY KEY (marche_id),
   CONSTRAINT fk_createur FOREIGN KEY (createur) REFERENCES trader (trader_id),
   CONSTRAINT fk_inverse FOREIGN KEY (inverse) REFERENCES marche (marche_id)
@@ -72,6 +73,7 @@ CREATE TABLE offre(
   acheteur int,
   acheteur_inverse int,
   offre_date timestamp,
+  achat boolean NOT NULL DEFAULT true,
   CONSTRAINT pk_offre_id PRIMARY KEY (offre_id),
   CONSTRAINT fk_marche FOREIGN KEY (marche) REFERENCES marche (marche_id),
   CONSTRAINT fk_acheteur FOREIGN KEY (acheteur) REFERENCES trader (trader_id),
@@ -104,14 +106,18 @@ UPDATE marche SET inverse = 4 WHERE marche_id = 3;
 
 --les offre d'un marché
 
-insert into offre (valeur,marche,acheteur) values (40,1, 1);
-insert into offre (valeur,marche,acheteur) values (38, 2,2);
+--insert into offre (valeur,marche,acheteur) values (40,1, 1);
+--insert into offre (valeur,marche,acheteur) values (38, 2,2);
+insert into offre (valeur,marche,acheteur) values (60, 3, 2);
+--insert into offre (valeur,marche,acheteur) values (70, 4, 1);
+insert into offre (valeur,marche,acheteur,achat) values (40, 4, 2, false);
+--insert into offre (valeur,marche,acheteur,achat) values (30, 3, 1, false);
 
 -- les offre le l'autre marché
 
-insert into offre (valeur,marche,acheteur) values (38,4,1);
-insert into offre (valeur,marche,acheteur) values (47,3,2);
-insert into offre(valeur,marche,acheteur,offre_date) values (40,1,2,'2014-01-30 15:38:24');
+--insert into offre (valeur,marche,acheteur) values (38,4,1);
+--insert into offre (valeur,marche,acheteur) values (47,3,2);
+--insert into offre(valeur,marche,acheteur,offre_date) values (40,1,2,'2014-01-30 15:38:24');
 
 update offre SET offre_date = '2014-01-05 11:30:45' where offre_id=1;
 update offre SET offre_date = '2013-12-22 10:30:45' where offre_id=4;
