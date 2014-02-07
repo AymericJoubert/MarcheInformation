@@ -35,6 +35,10 @@ public class Compte extends HttpServlet
 		out.println("Prenom : <span class='info'>"+current_user.getPrenom()+"</span>");
 		out.println("</p>");
 		out.println("<br/><br/>");
+		out.println("Detail des titres : <br/><br/>");
+		out.println("<span class='info'>"+current_user.getTitresDetails(req.getRemoteUser())+"</span>");
+		out.println("</p>");
+		out.println("<br/><br/>");
 		out.println("Mot de passe : <span class='info'>********</span>");
 		out.println("</p>");
 		out.println("<form method='post'>");

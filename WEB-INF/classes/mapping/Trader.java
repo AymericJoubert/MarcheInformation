@@ -13,6 +13,7 @@ public class Trader {
     private String prenom;
     private String cash;
     private String pass;
+    private String titres;
     private Connection con = null;
 
     public Trader(String user_name){
@@ -24,6 +25,8 @@ public class Trader {
 	    con = ds.getConnection();
 
 	    PreparedStatement pst = con.prepareStatement("SELECT user_id, user_name, nom, prenom, cash, user_pass FROM users WHERE user_name = ?");
+	    PreparedStatement pst2 = con.prepareStatement("SELECT COUNT(*) FROM offre JOIN users on user_id = acheteur and user_name = ? and offre.achat = true");
+	    pst2.setString(1, user_name);
 	    pst.setString(1, user_name);
 	    ResultSet rs = pst.executeQuery();
 	    rs.next();
@@ -33,6 +36,10 @@ public class Trader {
 	    prenom = rs.getString(4);
 	    cash = rs.getString(5);
 	    pass = rs.getString(6);
+	    
+	    rs = pst2.executeQuery();
+	    rs.next();
+	    titres = rs.getString(1);	    
 
 	}
 	catch(Exception e){
@@ -74,6 +81,40 @@ public class Trader {
 	
 	public boolean compareMdp(String mdp){
 		return pass.equals(mdp);
+	}
+	
+	public String getTitres(){
+		return titres;
+	}
+	
+	public String getTitresDetails(String user_name){
+		Connection conn = null;
+		String ret = "";
+		try{
+			Context initCtx = new InitialContext();
+			Context envCtx = (Context) initCtx.lookup("java:comp/env");
+			DataSource ds = (DataSource) envCtx.lookup("marche");
+			conn = ds.getConnection();
+		
+			PreparedStatement pst = con.prepareStatement("select question, COUNT(*) from offre join users on user_id = acheteur join marche on offre.marche = marche.marche_id WHERE user_name = ? and offre.achat = true group by marche.question");
+			pst.setString(1, user_name);
+			ResultSet rs = pst.executeQuery();
+			while(rs.next()){
+				ret += rs.getString(1) + " : " + rs.getString(2) + " <br/> ";
+			}
+			conn.close();
+			return ret;
+		
+			
+		}
+		catch(Exception e){
+			try{
+				conn.close();
+				return ret;				
+			}catch(Exception ee){
+				return ret;
+			}
+		}
 	}
 
 }

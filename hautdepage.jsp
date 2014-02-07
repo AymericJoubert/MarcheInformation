@@ -18,7 +18,7 @@
       <div id="haut">
 	<div id="logo">
 	  <div id="gauche">
-	    <img src="images/bourse.jpg" alt="bourse.jpg"/>
+	    <img src="images/logo.jpg" alt="bourse.jpg"/>
 	  </div>
 	  <div id="droite">
 	    <h1>Bourse de l'information</h1>
@@ -34,10 +34,10 @@
 	    <h4>Bienvenue <%= request.getRemoteUser() %></h4>
 	    <p>
 	      Cash : <%= current_user.getCash() %>
-	      Titres : 5
+	      Titres : <%= current_user.getTitres() %>
 	    </p>
 	    <% } else { %>
-	    <a href="factice.jsp">Inscrivez Vous !</a>
+	    <div id='align'><a href="factice.jsp">Inscrivez Vous !</a></div>
 	    <% } %>
 
 	  </div>
