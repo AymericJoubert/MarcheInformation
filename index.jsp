@@ -10,8 +10,8 @@
     		marches.getSymetriquesMarkets();
       }
     	// recupere le premier carnet
-    	Market marche = marches.getMarches().get(0);
-    	ArrayList<Offre> offres = marche.getOffres();
+    	Market marche = marches.getLeMarche();
+    	ArrayList<Offre> offres = marche.getVentes();
 
         //out.println("offre taille"+offres.size()+ "offre empty :"+offres.isEmpty());
     	%>
@@ -24,7 +24,7 @@
       		<th>Quantité</th><th>Prix</th>
       	</tr>
       <% if(!offres.isEmpty() ){%>
-      <tr><td colspan="2">offre d'achat du march&eacute;</td></tr>
+      <tr><td colspan="2">offre de vente du march&eacute;</td></tr>
        	<%for(Offre o : offres){
        		if(o.getAcheteurInverse() == null && o.getValeur() > 0 && o.getValeur() < 100){%>
        		<tr>
@@ -33,15 +33,15 @@
        	<% } %>
        <%	} %>
       <% }else{%>
-        <tr><td colspan="2">Pas encore d'offre d'achat</td></tr>
+        <tr><td colspan="2">Pas encore d'offre de vente</td></tr>
       <% } %>
     </table>
 <HR>
-      <% offres = marche.getVentes();
+      <% offres = marche.getOffres();
         //out.println("offre taille"+offres.size()+ "offre empty :"+offres.isEmpty());
         if(!offres.isEmpty()){%>
         <table id="market_table">
-          <tr><td colspan="2">offre de vente du march&eacute;</td></tr>
+          <tr><td colspan="2">offre d'achat du march&eacute;</td></tr>
          	<%for(Offre o : offres){
          		if(o.getAcheteurInverse() == null && o.getValeur() > 0 && o.getValeur() < 100){%>
          		<tr>
@@ -50,7 +50,7 @@
          	<%}%>
        </table>
      <% } else { %>
-        <table><tr><td>Pas encore d'offre de vente</td></tr></table>
+        <table><tr><td>Pas encore d'offre d'achat</td></tr></table>
   <% } %>
 	<%  if(request.getRemoteUser()!=null) {%> 
             <form method='post' action='OffreManager'>
