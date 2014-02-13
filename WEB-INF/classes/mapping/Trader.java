@@ -4,6 +4,7 @@ import java.sql.*;
 import javax.naming.*;
 import java.sql.*;
 import javax.sql.*;
+import bdd.ConnectionMarket;
 
 public class Trader {
 
@@ -40,7 +41,7 @@ public class Trader {
 	    rs = pst2.executeQuery();
 	    rs.next();
 	    titres = rs.getString(1);	    
-
+		con.close();
 	}
 	catch(Exception e){
 	    try{
@@ -59,7 +60,8 @@ public class Trader {
 	return user_id;
     }
 
-    public void reloadCash() throws SQLException{
+    public void reloadCash() throws SQLException, NamingException{
+    	con = ConnectionMarket.getConnection();
     	PreparedStatement pst = con.prepareStatement("SELECT cash FROM users WHERE user_name = ?");
     	pst.setString(1,user_name);
     	ResultSet rs = pst.executeQuery();
